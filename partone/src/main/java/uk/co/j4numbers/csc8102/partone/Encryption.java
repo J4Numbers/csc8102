@@ -48,10 +48,19 @@ public class Encryption {
         write_to_file(joined, filename);
     }
 
+    private DerivedKeys derive_keys(byte[] password) throws NoSuchAlgorithmException
+    {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(password);
+        byte[] digest = md.digest();
+        return new DerivedKeys(Utils.split_byte_array(digest, 0, 16),
+                Utils.split_byte_array(digest, 16, 32));
+    }
+
     private byte[] generate_initial_vector()
     {
         SecureRandom sr = new SecureRandom();
-        byte[] ret_bytes = new byte[16 * 8];
+        byte[] ret_bytes = new byte[16];
         sr.nextBytes(ret_bytes);
         return ret_bytes;
     }
@@ -66,15 +75,6 @@ public class Encryption {
         return mac_cipher.doFinal(Utils.concatenate_byte_arrays(iv, ciphertext));
     }
 
-    private DerivedKeys derive_keys(byte[] password) throws NoSuchAlgorithmException
-    {
-        MessageDigest md = MessageDigest.getInstance("SHA256");
-        md.update(password);
-        byte[] digest = md.digest();
-        return new DerivedKeys(Utils.split_byte_array(digest, 0, 16),
-                Utils.split_byte_array(digest, 16, 32));
-    }
-
     /**
      *
      * @param iv 16-byte random data
@@ -87,7 +87,7 @@ public class Encryption {
             InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException
     {
         SecretKey aes_key = new SecretKeySpec(key, "AES");
-        Cipher aes_cipher = Cipher.getInstance("AES/CBC/PKC5");
+        Cipher aes_cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         aes_cipher.init(Cipher.ENCRYPT_MODE, aes_key, new IvParameterSpec(iv));
 
         return aes_cipher.doFinal(plaintext);
