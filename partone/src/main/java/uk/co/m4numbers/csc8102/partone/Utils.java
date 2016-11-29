@@ -56,7 +56,7 @@ public class Utils {
     {
         String s = "";
         for (byte aB : b) {
-            s = s + String.format("%02X", aB);
+            s = s + String.format("%02x", aB);
         }
         return s;
     }
@@ -91,7 +91,10 @@ public class Utils {
             int in;
             do {
                 in = fif.read();
-                ret = ret + (char) in;
+                if (in != -1)
+                {
+                    ret = ret + (char) in;
+                }
             } while (in != -1);
             fif.close();
         }

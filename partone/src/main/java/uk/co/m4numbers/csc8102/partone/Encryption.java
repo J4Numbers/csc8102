@@ -41,12 +41,12 @@ public class Encryption {
     /**
      * A map of the starting files that are available to be encrypted, decrypted, and checked. If a file exists
      * in the folder whose base name isn't on this list, they get kicked out for some reason or another
-     */
+     *
     private Map<String, PasswordFiles> allowed_files;
 
     /**
      * Salt array for the purpose of decrypting our encrypted file key
-     */
+     *
     private byte[] salt = new byte[]{29, -99, -107, -87, -75, -90, 35, 121};
 
     /**
@@ -61,7 +61,7 @@ public class Encryption {
      * @param password The password of the file (which must have write permissions)
      * @return The result of the operation - if it wasn't successful, we return false
      * @throws Exception If something to do with our cryptography wasn't supported or we were handed a bogus file
-     */
+     *
     public boolean encrypt(String fileName, String password) throws Exception
     {
         // Check to see whether we were handed an unsupported file or just a plain-ol' bogus file
@@ -143,5 +143,5 @@ public class Encryption {
         }
         return false;
     }
-
+*/
 }
