@@ -8,12 +8,18 @@ import uk.co.m4numbers.csc8102.partone.Utils;
 /**
  * Class Name - UtilTesting
  * Package - uk.co.m4numbers.partone.tests
- * Desc of Class -
+ * Desc of Class - Test Driven Development class for testing the utility
+ *   functions available to all classes
  * Author(s) - M. D. Ball
  * Last Mod - 29/11/2016
  */
 public class UtilTesting {
 
+    /**
+     * Evaluate whether the conversion from hexadecimal strings to byte
+     * arrays is working properly by converting the numbers 0 to 15 in
+     * sequence and comparing the output against those numbers
+     */
     @Test
     public void evaluate_hex_string_to_byte_array()
     {
@@ -25,6 +31,12 @@ public class UtilTesting {
         }
     }
 
+    /**
+     * Evaluate whether the conversion from byte arrays to hexadecimal
+     * strings is working properly by converting the byte values from 0 to 15
+     * into a hexadecimal string and comparing the hexadecimal string for
+     * those numbers against the output
+     */
     @Test
     public void evaluate_byte_array_to_hex_string()
     {
@@ -34,6 +46,11 @@ public class UtilTesting {
         Assert.assertEquals(hex_string, comparator);
     }
 
+    /**
+     * Evaluate whether we can read the file that is present in the module
+     * directory containing the value below by reading in the value from that
+     * file and comparing it against the value we entered below
+     */
     @Test
     public void evaluate_read_file()
     {
