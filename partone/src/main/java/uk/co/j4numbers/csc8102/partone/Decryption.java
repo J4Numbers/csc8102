@@ -49,7 +49,7 @@ public class Decryption {
      *                 file
      * @return Whether or not we succeeded in opening up this not-so-classified information
      * @throws Exception When we're handed a bogus file, or if the crypto libraries complain at us for some reason
-     */
+     *
     public boolean decrypt(String fileName, String password) throws Exception
     {
         //Get the basename of the file we're looking at (everything before the .enc), and plug it into our check
@@ -127,5 +127,5 @@ public class Decryption {
         }
         return false;
     }
-
+*/
 }
