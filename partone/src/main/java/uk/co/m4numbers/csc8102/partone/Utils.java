@@ -63,23 +63,19 @@ public class Utils {
 
     public static byte[] concatenate_byte_arrays(byte[] a, byte[] b)
     {
-        int total = a.length + b.length;
-        int i = 0;
+        byte[] concat = new byte[a.length + b.length];
 
-        byte[] concat = new byte[total];
-        while (i < total)
-        {
-            if (i < a.length)
-            {
-                concat[i] = a[i];
-            }
-            else
-            {
-                concat[i] = b[i - a.length];
-            }
-            ++i;
-        }
+        System.arraycopy(a, 0, concat, 0, a.length);
+        System.arraycopy(b, 0, concat, a.length, b.length);
+
         return concat;
+    }
+
+    public static byte[] split_byte_array(byte[] to_split, int start, int end)
+    {
+        byte[] result = new byte[end - start];
+        System.arraycopy(to_split, start, result, 0, end - start);
+        return result;
     }
 
     public static String get_user_password() throws IOException

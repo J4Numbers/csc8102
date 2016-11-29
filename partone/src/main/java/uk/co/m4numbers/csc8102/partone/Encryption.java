@@ -16,21 +16,12 @@ package uk.co.m4numbers.csc8102.partone;
  * limitations under the License.
  */
 
-import sun.plugin2.message.Message;
-
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.*;
 import java.security.*;
-
-import java.security.spec.KeySpec;
-import java.util.*;
 
 /**
  * Class Name - Encryption
@@ -41,6 +32,22 @@ import java.util.*;
  */
 public class Encryption {
 
+    public void encrypt(String filename, String password) throws Exception
+    {
+        String plaintext = Utils.read_file(filename);
+        DerivedKeys key_set = derive_keys(password.getBytes("utf-8"));
+
+        byte[] iv = generate_initial_vector();
+        byte[] ciphertext = generate_ciphertext(iv, key_set.aes_key,
+                plaintext.getBytes("utf-8"));
+        byte[] hmac = generate_hmac(iv, ciphertext, key_set.mac_code);
+
+        byte[] joined = Utils.concatenate_byte_arrays(
+                Utils.concatenate_byte_arrays(iv, ciphertext), hmac);
+
+        write_to_file(joined, filename);
+    }
+
     private byte[] generate_initial_vector()
     {
         SecureRandom sr = new SecureRandom();
@@ -49,13 +56,23 @@ public class Encryption {
         return ret_bytes;
     }
 
-    private byte[] generate_hmac(byte[] iv, byte[] ciphertext) throws NoSuchAlgorithmException, InvalidKeyException
+    private byte[] generate_hmac(byte[] iv, byte[] ciphertext, byte[] mac)
+            throws NoSuchAlgorithmException, InvalidKeyException
     {
-        Mac mac = Mac.getInstance("HmacSHA256");
-        SecretKeySpec signing = new SecretKeySpec(iv, "HmacSHA256");
-        mac.init(signing);
+        Mac mac_cipher = Mac.getInstance("HmacSHA256");
+        SecretKeySpec signing = new SecretKeySpec(mac, "HmacSHA256");
+        mac_cipher.init(signing);
 
-        return mac.doFinal(Utils.concatenate_byte_arrays(iv, ciphertext));
+        return mac_cipher.doFinal(Utils.concatenate_byte_arrays(iv, ciphertext));
+    }
+
+    private DerivedKeys derive_keys(byte[] password) throws NoSuchAlgorithmException
+    {
+        MessageDigest md = MessageDigest.getInstance("SHA256");
+        md.update(password);
+        byte[] digest = md.digest();
+        return new DerivedKeys(Utils.split_byte_array(digest, 0, 16),
+                Utils.split_byte_array(digest, 16, 32));
     }
 
     /**
@@ -76,99 +93,18 @@ public class Encryption {
         return aes_cipher.doFinal(plaintext);
     }
 
-    /**
-     * Encrypt a file with AES symmetric encryption. However, we will only do so if our user gives us a password
-     * which has been verified through SHA-256. Once that has been done and everything is above-board, we will proceed
-     * in the encryption and also generate a signature of the file afterwards through Hmac and SHA-256. All of this
-     * data is dumped into the files [filename].enc and [filename].sig afterwards with Base64 encoding.
-     *
-     * After all that, we delete the original file and move on with our lives.
-     *
-     * @param fileName The name of the file that we're encrypting
-     * @param password The password of the file (which must have write permissions)
-     * @return The result of the operation - if it wasn't successful, we return false
-     * @throws Exception If something to do with our cryptography wasn't supported or we were handed a bogus file
-     *
-    public boolean encrypt(String fileName, String password) throws Exception
+    private void write_to_file(byte[] file_contents, String file_name) throws IOException
     {
-        // Check to see whether we were handed an unsupported file or just a plain-ol' bogus file
-        if (!allowed_files.containsKey(fileName) || !new File(fileName).exists())
+        File encrypted_file = new File(file_name + ".8102");
+        FileOutputStream fos = new FileOutputStream(encrypted_file);
+        fos.write(new sun.misc.BASE64Encoder().encode(file_contents).getBytes("utf-8"));
+        fos.flush();
+        fos.close();
+
+        if (!new File(file_name).delete())
         {
-            throw new Exception();
+            throw new IOException("File deletion failed");
         }
-
-        //Get the associated passwords for our file and hash the password we were given above
-        PasswordFiles pf = allowed_files.get(fileName);
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        md.update(password.getBytes("utf-8"));
-        byte[] dig = md.digest();
-
-        //If the passwords match, then the password we were given is, indeed, the correct password for our use
-        if (Arrays.equals(dig, pf.getWriteKey()))
-        {
-            //Therefore, we may as well start by reading in our file to a byte array before we encrypt it all
-            byte[] contents = Utils.read_file(fileName).getBytes("utf-8");
-
-            //Now, taking the key that we were given, we turn it into a secret key using whatever algorithm is named
-            // below, because heaven knows if I'm going to spell it out at all...
-            //
-            //Incidentally, heaven says 'no' to that.
-            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-            KeySpec ks = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
-            SecretKey tmp = skf.generateSecret(ks);
-            SecretKey passK = new SecretKeySpec(tmp.getEncoded(), "AES");
-
-            Cipher kc = Cipher.getInstance("AES");
-            kc.init(Cipher.DECRYPT_MODE, passK);
-
-            //Boot up the AES cipher and give it a key which is found after decrypting a stored secret key that
-            // sounds a lot more complicated than it is, and yet is far too complicated for what it does.
-            Cipher c = Cipher.getInstance("AES");
-            SecretKey k = new SecretKeySpec(kc.doFinal(pf.getSecretWriteKey()), "AES");
-            c.init(Cipher.ENCRYPT_MODE, k);
-
-            //Encrypt the file
-            byte[] enc = c.doFinal(contents);
-
-            //And sign the encrypted contents of the file with a MAC so that we know the contents of the file haven't
-            // been tampered with at all when we decrypt it later
-            Mac mac = Mac.getInstance("HmacSHA256");
-            Key macKey = new SecretKeySpec(pf.getWriteKey(), "AES");
-            mac.init(macKey);
-            byte[] sig = mac.doFinal(enc);
-
-            //Start our files with their respective endings
-            File encF = new File(fileName + ".enc");
-            File sigF = new File(fileName + ".sig");
-
-            //Write out our encoded file
-            FileOutputStream fos = new FileOutputStream(encF);
-            fos.write(new sun.misc.BASE64Encoder().encode(enc).getBytes("utf-8"));
-            fos.flush();
-            fos.close();
-
-            //Write out our signature
-            fos = new FileOutputStream(sigF);
-            fos.write(new sun.misc.BASE64Encoder().encode(sig).getBytes("utf-8"));
-            fos.flush();
-            fos.close();
-
-            //And delete the original file before we bugger off out of here
-            Path p = new File(fileName).toPath();
-            Files.delete(p);
-
-            return true;
-        }
-        //Since the else was triggered, someone made an incorrect guess at the password... Naughty peoples...
-        // ...
-        // ...
-        // ...
-        // Hss...
-        else
-        {
-            System.out.println("Incorrect password for file.");
-        }
-        return false;
     }
-*/
+
 }

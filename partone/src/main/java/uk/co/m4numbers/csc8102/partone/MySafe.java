@@ -55,7 +55,8 @@ public class MySafe {
                     System.out.println("File already encrypted...");
                     throw new Exception("File already encrypted");
                 }
-                Utils.get_user_password();
+                Encryption enc = new Encryption();
+                enc.encrypt(argv[1], Utils.get_user_password());
             }
             //If they want to decrypt something, they use -d [filename].8102
             else if (argv[0].equals("-d"))
