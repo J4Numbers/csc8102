@@ -55,7 +55,7 @@ public class MySafe {
                     System.out.println("File already encrypted...");
                     throw new Exception("File already encrypted");
                 }
-                p.encryptFile(argv[1], argv[2]);
+                Utils.get_user_password();
             }
             //If they want to decrypt something, they use -d [filename].8102
             else if (argv[0].equals("-d"))
@@ -65,7 +65,7 @@ public class MySafe {
                     System.out.println("File is not encrypted...");
                     throw new Exception("File not encrypted");
                 }
-                p.decryptFile(argv[1], argv[2]);
+                Utils.get_user_password();
             }
             //Otherwise, if none of those were applicable, throw out some help
             else

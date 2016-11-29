@@ -16,10 +16,7 @@ package uk.co.m4numbers.csc8102.partone;
  * limitations under the License.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Class Name - Utils
@@ -64,9 +61,11 @@ public class Utils {
         return s;
     }
 
-    public static String get_user_password()
+    public static String get_user_password() throws IOException
     {
-        return "";
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.printf("Please enter a password: ");
+        return br.readLine();
     }
 
     /**
