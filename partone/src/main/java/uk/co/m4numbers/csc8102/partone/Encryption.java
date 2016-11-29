@@ -30,9 +30,9 @@ import java.security.*;
  * Author(s) - M. D. Ball
  * Last Mod: 29/11/2016
  */
-public class Encryption {
+class Encryption {
 
-    public void encrypt(String filename, String password) throws Exception
+    void encrypt(String filename, String password) throws Exception
     {
         String plaintext = Utils.read_file(filename);
         DerivedKeys key_set = derive_keys(password.getBytes("utf-8"));
@@ -68,8 +68,8 @@ public class Encryption {
     private byte[] generate_hmac(byte[] iv, byte[] ciphertext, byte[] mac)
             throws NoSuchAlgorithmException, InvalidKeyException
     {
-        Mac mac_cipher = Mac.getInstance("HmacSHA256");
-        SecretKeySpec signing = new SecretKeySpec(mac, "HmacSHA256");
+        Mac mac_cipher = Mac.getInstance("HmacSHA1");
+        SecretKeySpec signing = new SecretKeySpec(mac, "HmacSHA1");
         mac_cipher.init(signing);
 
         return mac_cipher.doFinal(Utils.concatenate_byte_arrays(iv, ciphertext));
