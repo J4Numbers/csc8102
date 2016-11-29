@@ -1,5 +1,8 @@
 .idea/
 *.iml
+target/
+out/
+bin/
 
 UnlimitedJCEPolicyJDK8/
 /.gtm/
