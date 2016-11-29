@@ -50,7 +50,7 @@ public class Decryption {
      * @return Whether or not we succeeded in opening up this not-so-classified information
      * @throws Exception When we're handed a bogus file, or if the crypto libraries complain at us for some reason
      */
-    public boolean decryptFile(String fileName, String password) throws Exception
+    public boolean decrypt(String fileName, String password) throws Exception
     {
         //Get the basename of the file we're looking at (everything before the .enc), and plug it into our check
         // to make sure this is a verified file and actually exists too
@@ -71,7 +71,7 @@ public class Decryption {
         if (Arrays.equals(dig, pf.getReadKey()))
         {
             //Read in the contents of the encrypted file and decrypt the base64 encoded file
-            byte[] contents = new sun.misc.BASE64Decoder().decodeBuffer(Utils.readFile(fileName));
+            byte[] contents = new sun.misc.BASE64Decoder().decodeBuffer(Utils.read_file(fileName));
 
             //Once again, we get our file key through a decryption of an encrypted block somewhere, meaning that
             // we need to use our password as a key to get that decryption before we do anything else

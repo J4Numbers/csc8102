@@ -38,7 +38,7 @@ public class Utils {
      * @param s The hexadecimal string
      * @return A byte array from said string of length s/2
      */
-    public static byte[] hexStringToByteArray(String s) {
+    public static byte[] hex_string_to_byte_array(String s) {
         int len = s.length();
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
@@ -55,7 +55,7 @@ public class Utils {
      * @param b The byte array to convert
      * @return A hex string
      */
-    public static String byteArrayToHexString(byte[] b)
+    public static String byte_array_to_hex_string(byte[] b)
     {
         String s = "";
         for (byte aB : b) {
@@ -64,13 +64,18 @@ public class Utils {
         return s;
     }
 
+    public static String get_user_password()
+    {
+        return "";
+    }
+
     /**
      * Read a file and return its contents
      *
      * @param fileName The file we're reading
      * @return The contents of the file as a string
      */
-    public static String readFile(String fileName)
+    public static String read_file(String fileName)
     {
         File f = new File(fileName);
         String ret = "";
@@ -105,7 +110,7 @@ public class Utils {
     /**
      * Print the help information which is related to this program
      */
-    public static void printHelp()
+    public static void print_help()
     {
         System.out.println("MySafe can be used in one of two ways:");
         System.out.println("\t-e [filename]");

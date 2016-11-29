@@ -70,14 +70,14 @@ public class MySafe {
             //Otherwise, if none of those were applicable, throw out some help
             else
             {
-                Utils.printHelp();
+                Utils.print_help();
             }
         }
         catch (Exception ex)
         {
             //If this was triggered, then it's more-than-likely their error, so throw out a help thingy to them
             ex.printStackTrace();
-            Utils.printHelp();
+            Utils.print_help();
         }
     }
 }

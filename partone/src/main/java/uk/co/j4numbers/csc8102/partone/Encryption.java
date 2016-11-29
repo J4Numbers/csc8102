@@ -62,7 +62,7 @@ public class Encryption {
      * @return The result of the operation - if it wasn't successful, we return false
      * @throws Exception If something to do with our cryptography wasn't supported or we were handed a bogus file
      */
-    public boolean encryptFile(String fileName, String password) throws Exception
+    public boolean encrypt(String fileName, String password) throws Exception
     {
         // Check to see whether we were handed an unsupported file or just a plain-ol' bogus file
         if (!allowed_files.containsKey(fileName) || !new File(fileName).exists())
@@ -80,7 +80,7 @@ public class Encryption {
         if (Arrays.equals(dig, pf.getWriteKey()))
         {
             //Therefore, we may as well start by reading in our file to a byte array before we encrypt it all
-            byte[] contents = Utils.readFile(fileName).getBytes("utf-8");
+            byte[] contents = Utils.read_file(fileName).getBytes("utf-8");
 
             //Now, taking the key that we were given, we turn it into a secret key using whatever algorithm is named
             // below, because heaven knows if I'm going to spell it out at all...
