@@ -16,7 +16,10 @@ package uk.co.m4numbers.csc8102.partone;
  * limitations under the License.
  */
 
+import sun.plugin2.message.Message;
+
 import javax.crypto.*;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -41,7 +44,7 @@ public class Encryption {
     private byte[] generate_initial_vector()
     {
         SecureRandom sr = new SecureRandom();
-        byte[] ret_bytes = new byte[16];
+        byte[] ret_bytes = new byte[16 * 8];
         sr.nextBytes(ret_bytes);
         return ret_bytes;
     }
@@ -53,6 +56,24 @@ public class Encryption {
         mac.init(signing);
 
         return mac.doFinal(Utils.concatenate_byte_arrays(iv, ciphertext));
+    }
+
+    /**
+     *
+     * @param iv 16-byte random data
+     * @param key 16-byte AES key
+     * @param plaintext plaintext bytes to encrypt
+     * @return Ciphertext
+     */
+    private byte[] generate_ciphertext(byte[] iv, byte[] key, byte[] plaintext)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException
+    {
+        SecretKey aes_key = new SecretKeySpec(key, "AES");
+        Cipher aes_cipher = Cipher.getInstance("AES/CBC/PKC5");
+        aes_cipher.init(Cipher.ENCRYPT_MODE, aes_key, new IvParameterSpec(iv));
+
+        return aes_cipher.doFinal(plaintext);
     }
 
     /**
