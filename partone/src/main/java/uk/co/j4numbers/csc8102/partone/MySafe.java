@@ -66,7 +66,8 @@ public class MySafe {
                     System.out.println("File is not encrypted...");
                     throw new Exception("File not encrypted");
                 }
-                Utils.get_user_password();
+                Decryption decr = new Decryption();
+                decr.decrypt(argv[1], Utils.get_user_password());
             }
             //Otherwise, if none of those were applicable, throw out some help
             else
