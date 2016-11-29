@@ -47,6 +47,19 @@ public class UtilTesting {
     }
 
     @Test
+    public void evaluate_split_byte_array()
+    {
+        byte[] whole = {0, 1, 2, 3, 4, 5, 6, 7};
+        byte[] test_half  = {0, 1, 2, 3};
+        byte[] actual_half = Utils.split_byte_array(whole, 0, 4);
+
+        for (int i = 0; i < 4; ++i)
+        {
+            Assert.assertEquals(test_half[i], actual_half[i]);
+        }
+    }
+
+    @Test
     public void evaluate_concatenate_byte_arrays()
     {
         byte[] left = {0, 1, 2, 3, 4, 5, 6, 7};
