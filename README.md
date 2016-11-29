@@ -15,5 +15,5 @@ written within this repository is by myself unless explicitly stated in a
 javadoc or in-line comment nearby any borrowed code.
 
 
-[1][https://twitter.com/M4numbers](Matthew D. Ball)
-[2][http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html](JCE Download)
+[1]: https://twitter.com/M4numbers "Matthew D. Ball"
+[2]: http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html "JCE Download"
