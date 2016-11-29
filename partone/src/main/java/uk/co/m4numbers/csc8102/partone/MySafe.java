@@ -20,7 +20,7 @@ package uk.co.m4numbers.csc8102.partone;
  * Package - uk.co.m4numbers.csc8102.partone
  * Desc of Class - Main class which contains our main program
  * Author(s) - M. D. Ball
- * Last Mod: 05-May-16
+ * Last Mod: 29/11/2016
  */
 public class MySafe {
 

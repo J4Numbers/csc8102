@@ -23,10 +23,10 @@ import java.io.IOException;
 
 /**
  * Class Name - Utils
- * Package - uk.co.m4numbers.csc3124.q1
+ * Package - uk.co.m4numbers.csc8102.partone
  * Desc of Class - Static class for allowing the users to do common actions on files and data
  * Author(s) - M. D. Ball
- * Last Mod: 06/05/2016
+ * Last Mod: 29/11/2016
  */
 public class Utils {
 
@@ -107,21 +107,12 @@ public class Utils {
      */
     public static void printHelp()
     {
-        System.out.println("Protect can be used in one of three ways:");
-        System.out.println("\t-e [filename] [password]");
-        System.out.println("\t\tWrite a new, encrypted version of a file into [filename].enc.");
-        System.out.println("\t\tThis will only work if you have the correct password for writing to a file");
+        System.out.println("MySafe can be used in one of two ways:");
+        System.out.println("\t-e [filename]");
+        System.out.println("\t\tEncrypt [filename] into [filename].8102");
         System.out.println("");
-        System.out.println("\t-d [filename].enc [password]");
-        System.out.println("\t\tRead [filename].enc into a new file: [filename].");
-        System.out.println("\t\tThe password must allow for reading the file, and the signature on\n"
-                + "\t\t[filename].enc must also be correct before it can be read");
-        System.out.println("");
-        System.out.println("\t-c");
-        System.out.println("\t\tCheck if all files in this folder are encrypted and delete any unencrypted ones.");
-        System.out.println("\t\tCheck that all files are signed correctly, deleting all failing signatures");
-        System.out.println("\t\tCheck for missing files compared to the original folder");
-        System.out.println("\t\tDelete any superfluous files in the folder");
+        System.out.println("\t-d [filename].8102");
+        System.out.println("\t\tDecrypt [filename].8102 into a new file: [filename].");
     }
 
 }
