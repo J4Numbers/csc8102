@@ -15,6 +15,8 @@ package uk.co.m4numbers.csc8102.partone;
  * limitations under the License.
  */
 
+import java.io.File;
+
 /**
  * Class Name - MySafe
  * Package - uk.co.m4numbers.csc8102.partone
@@ -33,38 +35,37 @@ public class MySafe {
     {
 
         try {
-            //If no arguments were provided, throw out some help text
-            if (argv.length < 1) {
+            //If exactly 2 arguments were not provided, throw out some help text
+            if (argv.length != 2) {
                 System.out.println("Incorrect usage of the program...");
-                throw new Exception("No arguments found");
+                throw new Exception("Incorrect args found");
             }
 
-            //Otherwise, something is probably going well, so boot our protection class
-            PasswordProtect p = new PasswordProtect();
+            if (!(new File(argv[1]).exists()))
+            {
+                System.out.println("File does not exist...");
+                throw new Exception("File does not exist");
+            }
 
-            //If the user wants to encrypt something, they use -e [filename] [password]
+            //If the user wants to encrypt something, they use -e [filename]
             if (argv[0].equals("-e"))
             {
-                if (argv.length != 3) {
-                    throw new Exception("Encryption args found was incorrect");
+                if (argv[1].endsWith(".8102"))
+                {
+                    System.out.println("File already encrypted...");
+                    throw new Exception("File already encrypted");
                 }
                 p.encryptFile(argv[1], argv[2]);
             }
-            //If they want to decrypt something, they use -d [filename].enc [password]
+            //If they want to decrypt something, they use -d [filename].8102
             else if (argv[0].equals("-d"))
             {
-                if (argv.length != 3) {
-                    throw new Exception("Decryption args found was incorrect");
+                if (!argv[1].endsWith(".8102"))
+                {
+                    System.out.println("File is not encrypted...");
+                    throw new Exception("File not encrypted");
                 }
                 p.decryptFile(argv[1], argv[2]);
-            }
-            //If they want to check the folder, they use -c
-            else if (argv[0].equals("-c"))
-            {
-                if (argv.length != 1) {
-                    throw new Exception("Checking args found was incorrect");
-                }
-                p.check();
             }
             //Otherwise, if none of those were applicable, throw out some help
             else
