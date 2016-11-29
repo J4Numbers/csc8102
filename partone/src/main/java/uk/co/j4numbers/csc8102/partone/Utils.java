@@ -61,6 +61,27 @@ public class Utils {
         return s;
     }
 
+    public static byte[] concatenate_byte_arrays(byte[] a, byte[] b)
+    {
+        int total = a.length + b.length;
+        int i = 0;
+
+        byte[] concat = new byte[total];
+        while (i < total)
+        {
+            if (i < a.length)
+            {
+                concat[i] = a[i];
+            }
+            else
+            {
+                concat[i] = b[i - a.length];
+            }
+            ++i;
+        }
+        return concat;
+    }
+
     public static String get_user_password() throws IOException
     {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

@@ -46,6 +46,21 @@ public class UtilTesting {
         Assert.assertEquals(hex_string, comparator);
     }
 
+    @Test
+    public void evaluate_concatenate_byte_arrays()
+    {
+        byte[] left = {0, 1, 2, 3, 4, 5, 6, 7};
+        byte[] right = {8, 9, 10, 11, 12, 13, 14, 15};
+
+        byte[] test_both = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+        byte[] actual_both = Utils.concatenate_byte_arrays(left, right);
+
+        for (int i = 0; i < 16; ++i)
+        {
+            Assert.assertEquals(test_both[i], actual_both[i]);
+        }
+    }
+
     /**
      * Evaluate whether we can read the file that is present in the module
      * directory containing the value below by reading in the value from that

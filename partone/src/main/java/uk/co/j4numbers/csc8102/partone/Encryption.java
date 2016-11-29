@@ -38,16 +38,22 @@ import java.util.*;
  */
 public class Encryption {
 
-    /**
-     * A map of the starting files that are available to be encrypted, decrypted, and checked. If a file exists
-     * in the folder whose base name isn't on this list, they get kicked out for some reason or another
-     *
-    private Map<String, PasswordFiles> allowed_files;
+    private byte[] generate_initial_vector()
+    {
+        SecureRandom sr = new SecureRandom();
+        byte[] ret_bytes = new byte[16];
+        sr.nextBytes(ret_bytes);
+        return ret_bytes;
+    }
 
-    /**
-     * Salt array for the purpose of decrypting our encrypted file key
-     *
-    private byte[] salt = new byte[]{29, -99, -107, -87, -75, -90, 35, 121};
+    private byte[] generate_hmac(byte[] iv, byte[] ciphertext) throws NoSuchAlgorithmException, InvalidKeyException
+    {
+        Mac mac = Mac.getInstance("HmacSHA256");
+        SecretKeySpec signing = new SecretKeySpec(iv, "HmacSHA256");
+        mac.init(signing);
+
+        return mac.doFinal(Utils.concatenate_byte_arrays(iv, ciphertext));
+    }
 
     /**
      * Encrypt a file with AES symmetric encryption. However, we will only do so if our user gives us a password
