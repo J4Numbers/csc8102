@@ -54,7 +54,13 @@ public class PasswordDictionary {
         }
         if (password_definition == 5)
         {
-            return "";
+            if (current_word >= variations.size())
+            {
+                return "";
+            }
+            String ret = variations.get(current_word);
+            ++current_word;
+            return ret;
         }
         if (curr_file.hasNextLine())
         {
@@ -81,6 +87,20 @@ public class PasswordDictionary {
                 new_file = "";
         }
         return new_file;
+    }
+
+    private void generate_alphanumerics(String[] alphabet, int curr_letter, String curr_total)
+    {
+        if (curr_letter == 4)
+        {
+            variations.add(curr_total);
+        }
+        else
+        {
+            for (String letter : alphabet) {
+                generate_alphanumerics(alphabet, curr_letter + 1, curr_total + letter);
+            }
+        }
     }
 
     private void generate_combinatorials(String[] letters, int curr_letter, String curr_total)
@@ -111,6 +131,7 @@ public class PasswordDictionary {
             if (password_definition == 3 || password_definition == 5)
             {
                 variations.clear();
+                password_definition = 5;
 
                 if (password_definition == 3)
                 {
@@ -136,7 +157,11 @@ public class PasswordDictionary {
                 }
                 else
                 {
-                    //a
+                    String[] alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_!@#$%^&*".split("");
+                    generate_alphanumerics(alphabet, 0, "");
+                    current_word = 0;
+
+                    nx = get_next_word();
                 }
             }
             else
