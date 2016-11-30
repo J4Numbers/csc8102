@@ -60,7 +60,7 @@ public class Recover {
             }
 
             String hashes = Utils.read_file(argv[1]);
-            String[] hash_collection = hashes.split("\n");
+            String[] hash_collection = hashes.split("\r?\n");
 
             PasswordDictionary pD = new PasswordDictionary();
             HashCracker hC = new HashCracker();

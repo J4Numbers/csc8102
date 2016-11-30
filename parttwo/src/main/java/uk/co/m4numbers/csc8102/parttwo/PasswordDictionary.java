@@ -16,6 +16,8 @@ package uk.co.m4numbers.csc8102.parttwo;
  * limitations under the License.
  */
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -38,6 +40,10 @@ public class PasswordDictionary {
 
     private String get_next_word() {
         if (password_definition == 3) {
+            if (current_word >= variations.size())
+            {
+                return "";
+            }
             String ret = variations.get(current_word) + current_iteration;
             ++current_iteration;
             if (current_iteration > 9999)
@@ -94,7 +100,7 @@ public class PasswordDictionary {
         }
     }
 
-    private String calculate_next_word()
+    private String calculate_next_word() throws FileNotFoundException
     {
         String nx = get_next_word();
 
@@ -118,13 +124,15 @@ public class PasswordDictionary {
                     }
                     for (String boy :
                             boy_names) {
-                        String[] letters = boy.split(".");
+                        String[] letters = boy.split("");
                         generate_combinatorials(letters, 0, "");
                     }
 
                     variations.add("");
                     current_word = 0;
                     current_iteration = 1;
+
+                    nx = get_next_word();
                 }
                 else
                 {
@@ -133,21 +141,21 @@ public class PasswordDictionary {
             }
             else
             {
-                curr_file = new Scanner("dictionary/" + switch_file());
+                curr_file = new Scanner(new File("dictionary/" + switch_file()));
                 nx = get_next_word();
             }
         }
         return nx;
     }
 
-    public PasswordDictionary()
+    public PasswordDictionary() throws FileNotFoundException
     {
         password_definition = 1;
-        curr_file = new Scanner("dictionary/girl_names.txt");
+        curr_file = new Scanner(new File("dictionary/girl_names.txt"));
         variations = new ArrayList<String>();
     }
 
-    public String next()
+    public String next() throws FileNotFoundException
     {
         return calculate_next_word();
     }

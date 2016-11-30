@@ -42,7 +42,7 @@ public class HashCracker {
 
             for (String actual_hash : hash_collection)
             {
-                if (actual_hash.equals(test_hash))
+                if (actual_hash.equalsIgnoreCase(test_hash))
                 {
                     System.out.printf("Hash %s has password %s\n", actual_hash, test_password);
                 }
