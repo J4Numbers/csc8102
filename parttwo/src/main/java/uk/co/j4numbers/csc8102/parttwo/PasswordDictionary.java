@@ -51,6 +51,7 @@ public class PasswordDictionary {
             if (current_iteration > 9999)
             {
                 ++current_word;
+                current_iteration = 1;
             }
             return ret;
         }
@@ -65,6 +66,7 @@ public class PasswordDictionary {
             if (current_iteration > 69)
             {
                 ++current_word;
+                current_iteration = 0;
             }
             return ret;
         }
