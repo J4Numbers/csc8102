@@ -65,6 +65,10 @@ public class Recover {
             PasswordDictionary pD = new PasswordDictionary();
             HashCracker hC = new HashCracker();
 
+            if (Utils.file_exists(argv[3]))
+            {
+                Utils.delete_file(argv[3]);
+            }
             Utils.write_to_file(hC.crack_hashes(hash_collection, pD).getBytes("utf-8"), argv[3]);
 
         }
