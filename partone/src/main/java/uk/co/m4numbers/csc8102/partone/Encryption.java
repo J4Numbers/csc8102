@@ -58,7 +58,16 @@ class Encryption {
         byte[] joined = Utils.concatenate_byte_arrays(
                 Utils.concatenate_byte_arrays(iv, ciphertext), hmac);
 
-        write_to_file(joined, filename);
+        //Write to the encrypted file in a more stable way
+        Utils.write_to_file(
+                new sun.misc.BASE64Encoder().encode(joined).getBytes("utf-8"),
+                filename + ".8102");
+
+        //Now delete the original file
+        if (!Utils.delete_file(filename))
+        {
+            throw new IOException("File deletion failed");
+        }
     }
 
     /**
@@ -138,32 +147,6 @@ class Encryption {
         aes_cipher.init(Cipher.ENCRYPT_MODE, aes_key, new IvParameterSpec(iv));
 
         return aes_cipher.doFinal(plaintext);
-    }
-
-    /**
-     * Write the encrypted data into a file that we can then decrypt at a
-     * later date if we see fit to. We put the contents in [file_name].8102
-     * and delete the original file from the records when we are done.
-     *
-     * @param file_contents What we are going to be writing to the file
-     * @param file_name The name of the file that we're going to write to...
-     *                  sort of
-     * @throws IOException If file deletion is hard and scary
-     */
-    private void write_to_file(byte[] file_contents, String file_name) throws IOException
-    {
-        File encrypted_file = new File(file_name + ".8102");
-        FileOutputStream fos = new FileOutputStream(encrypted_file);
-        //Encode the contents of the file into something which is a mite
-        // harder to corrupt
-        fos.write(new sun.misc.BASE64Encoder().encode(file_contents).getBytes("utf-8"));
-        fos.flush();
-        fos.close();
-
-        if (!new File(file_name).delete())
-        {
-            throw new IOException("File deletion failed");
-        }
     }
 
 }

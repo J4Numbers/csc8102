@@ -57,7 +57,12 @@ class Decryption {
         }
 
         byte[] plaintext = regenerate_plaintext(iv, key_set.aes_key, ciphertext);
-        write_to_file(plaintext, filename);
+
+        Utils.write_to_file(plaintext, filename.substring(0, filename.length() - 5));
+        if (!Utils.delete_file(filename))
+        {
+            throw new IOException("File deletion failed");
+        }
     }
 
     private DerivedKeys derive_keys(byte[] password) throws NoSuchAlgorithmException
@@ -95,20 +100,6 @@ class Decryption {
         aes_cipher.init(Cipher.DECRYPT_MODE, aes_key, new IvParameterSpec(iv));
 
         return aes_cipher.doFinal(ciphertext);
-    }
-
-    private void write_to_file(byte[] file_contents, String file_name) throws IOException
-    {
-        File decrypted_file = new File(file_name.substring(0, file_name.length() - 5) );
-        FileOutputStream fos = new FileOutputStream(decrypted_file);
-        fos.write(file_contents);
-        fos.flush();
-        fos.close();
-
-        if (!new File(file_name).delete())
-        {
-            throw new IOException("File deletion failed");
-        }
     }
 
 }

@@ -166,6 +166,34 @@ public class Utils {
     }
 
     /**
+     * Write some data to a file
+     *
+     * @param file_contents The data we are writing to the file
+     * @param file_name The file we are writing the data to
+     * @throws IOException If we have stream issues basically
+     */
+    public static void write_to_file(byte[] file_contents, String file_name) throws IOException
+    {
+        File encrypted_file = new File(file_name);
+        FileOutputStream fos = new FileOutputStream(encrypted_file);
+
+        fos.write(file_contents);
+        fos.flush();
+        fos.close();
+    }
+
+    /**
+     * Attempt to delete a file from the system
+     *
+     * @param file_name The file we want to delete from the system
+     * @return Whether that file got deleted or not
+     */
+    public static boolean delete_file(String file_name)
+    {
+        return new File(file_name).delete();
+    }
+
+    /**
      * Print the help information which is related to this program
      */
     public static void print_help()
