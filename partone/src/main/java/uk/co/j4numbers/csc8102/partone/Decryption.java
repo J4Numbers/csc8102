@@ -1,6 +1,6 @@
 package uk.co.j4numbers.csc8102.partone;
 
-/**
+/*
  * Copyright 2016 J4Numbers (j4numbers@gmail.com)
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.Arrays;
  * Author(s) - J4Numbers
  * Last Mod: 29/11/2016
  */
-public class Decryption {
+class Decryption {
 
     void decrypt(String filename, String password) throws Exception
     {

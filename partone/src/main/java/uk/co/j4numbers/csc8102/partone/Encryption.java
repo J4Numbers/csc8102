@@ -1,6 +1,6 @@
 package uk.co.j4numbers.csc8102.partone;
 
-/**
+/*
  * Copyright 2016 J4Numbers (j4numbers@gmail.com)
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
