@@ -203,7 +203,7 @@ public class Utils {
         System.out.println("\t\tEncrypt [filename] into [filename].8102");
         System.out.println("");
         System.out.println("\t-d [filename].8102");
-        System.out.println("\t\tDecrypt [filename].8102 into a new file: [filename].");
+        System.out.println("\t\tDecrypt [filename].8102 into [filename]");
     }
 
 }
