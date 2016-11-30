@@ -21,7 +21,8 @@ import java.io.*;
 /**
  * Class Name - Utils
  * Package - uk.co.m4numbers.csc8102.partone
- * Desc of Class - Static class for allowing the users to do common actions on files and data
+ * Desc of Class - Static class for allowing the users to do common actions on
+ *  files and data
  * Author(s) - M. D. Ball
  * Last Mod: 29/11/2016
  */
@@ -46,8 +47,8 @@ public class Utils {
     }
 
     /**
-     * Convert a byte array into a hex string... A function which I could have used a bit earlier to stop
-     * myself from manually doing it... Dammit
+     * Convert a byte array into a hex string... A function which I could have
+     * used a bit earlier to stop myself from manually doing it... Dammit
      *
      * @param b The byte array to convert
      * @return A hex string
@@ -61,6 +62,15 @@ public class Utils {
         return s;
     }
 
+    /**
+     * Join two byte arrays together to form one larger byte array that shall
+     * consume all in its hunger. Those that look upon the larger byte array
+     * shall shrink into madness for 'tis too boring a thing to behold
+     *
+     * @param a The first half of the array that we're joining
+     * @param b The second half of the array that we're joining
+     * @return The joined array
+     */
     public static byte[] concatenate_byte_arrays(byte[] a, byte[] b)
     {
         byte[] concat = new byte[a.length + b.length];
@@ -71,6 +81,16 @@ public class Utils {
         return concat;
     }
 
+    /**
+     * Split apart one large byte array into a smaller subsection for use by
+     * other people. To get two halves from this method, it has to be called
+     * twice; once for each half
+     *
+     * @param to_split The byte array that we're going to downsize
+     * @param start The start location (inclusive)
+     * @param end The end location (exclusive)
+     * @return The subsection of the array we were given
+     */
     public static byte[] split_byte_array(byte[] to_split, int start, int end)
     {
         byte[] result = new byte[end - start];
@@ -78,6 +98,13 @@ public class Utils {
         return result;
     }
 
+    /**
+     * Ask the user to enter a password and return whatever input we get to
+     * whoever asked for it
+     *
+     * @return The entered password
+     * @throws IOException If the input stream was a bust basically
+     */
     public static String get_user_password() throws IOException
     {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -85,6 +112,13 @@ public class Utils {
         return br.readLine();
     }
 
+    /**
+     * Return whether a given filename exists or not
+     *
+     * @param filename Path (relative or absolute) of the file whose existance
+     *                 we are unsure of
+     * @return Whether that file exists
+     */
     public static boolean file_exists(String filename)
     {
         return (new File(filename)).exists();
