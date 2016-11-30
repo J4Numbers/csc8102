@@ -30,26 +30,31 @@ import java.security.NoSuchAlgorithmException;
  */
 public class HashCracker {
 
-    public void crack_hashes(String[] hash_collection, PasswordDictionary dictionary)
+    public String crack_hashes(String[] hash_collection, PasswordDictionary dictionary)
             throws Exception
     {
         String test_password = dictionary.next();
         String test_hash;
+        String output = "";
 
         while (!test_password.equals(""))
         {
             test_hash = hash_generation(test_password);
 
-            for (String actual_hash : hash_collection)
+            for (int i = 0; i < hash_collection.length; ++i)
             {
-                if (actual_hash.equalsIgnoreCase(test_hash))
+                if (hash_collection[i].equalsIgnoreCase(test_hash))
                 {
-                    System.out.printf("Hash %s has password %s\n", actual_hash, test_password);
+                    hash_collection[i] = "";
+                    output += String.format("Hash: %s Password: %s\n", test_hash, test_password);
+                    System.out.printf("Hash %s has password %s\n", test_hash, test_password);
                 }
             }
 
             test_password = dictionary.next();
         }
+
+        return output;
     }
 
     private String hash_generation(String password) throws NoSuchAlgorithmException,
