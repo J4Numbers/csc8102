@@ -63,7 +63,7 @@ public class PasswordDictionary {
             }
             String ret = variations.get(current_word) + alphabet[current_iteration];
             ++current_iteration;
-            if (current_iteration > 69)
+            if (current_iteration >= alphabet.length)
             {
                 ++current_word;
                 current_iteration = 0;
