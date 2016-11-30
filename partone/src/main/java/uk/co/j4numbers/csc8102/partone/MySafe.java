@@ -42,6 +42,7 @@ public class MySafe {
                 throw new Exception("Incorrect args found");
             }
 
+            //If the file doesn't exist that we're meant to be reading from, cry
             if (!(new File(argv[1]).exists()))
             {
                 System.out.println("File does not exist...");
@@ -51,26 +52,32 @@ public class MySafe {
             //If the user wants to encrypt something, they use -e [filename]
             if (argv[0].equals("-e"))
             {
+                //If that file has the encoding line ending... cry
                 if (argv[1].endsWith(".8102"))
                 {
                     System.out.println("File already encrypted...");
                     throw new Exception("File already encrypted");
                 }
+                //Encrypt the file with a password
                 Encryption enc = new Encryption();
                 enc.encrypt(argv[1], Utils.get_user_password());
             }
+
             //If they want to decrypt something, they use -d [filename].8102
             else if (argv[0].equals("-d"))
             {
+                //If that file doesn't end in our encoding line ending... cry
                 if (!argv[1].endsWith(".8102"))
                 {
                     System.out.println("File is not encrypted...");
                     throw new Exception("File not encrypted");
                 }
+                //Decrypt the file with a password
                 Decryption decr = new Decryption();
                 decr.decrypt(argv[1], Utils.get_user_password());
             }
-            //Otherwise, if none of those were applicable, throw out some help
+
+            //Otherwise, if none of those were applicable... cry
             else
             {
                 Utils.print_help();
@@ -78,7 +85,8 @@ public class MySafe {
         }
         catch (Exception ex)
         {
-            //If this was triggered, then it's more-than-likely their error, so throw out a help thingy to them
+            //If this was triggered, then it's more-than-likely their error, so
+            // throw out a help thingy to them
             ex.printStackTrace();
             Utils.print_help();
         }
