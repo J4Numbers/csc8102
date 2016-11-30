@@ -85,7 +85,8 @@ public class MySafe {
         {
             //If this was triggered, then it's more-than-likely their error, so
             // throw out a help thingy to them
-            ex.printStackTrace();
+            System.out.printf("Err: %s\n", ex.getMessage());
+            //ex.printStackTrace();
             Utils.print_help();
         }
     }
