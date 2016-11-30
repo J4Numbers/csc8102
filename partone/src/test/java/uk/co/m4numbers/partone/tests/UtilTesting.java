@@ -90,6 +90,13 @@ public class UtilTesting {
         }
     }
 
+    @Test
+    public void evaluate_file_exists()
+    {
+        Assert.assertTrue(Utils.file_exists("test.txt"));
+        Assert.assertFalse(Utils.file_exists("cthulhu.txt"));
+    }
+
     /**
      * Evaluate whether we can read the file that is present in the module
      * directory containing the value below by reading in the value from that

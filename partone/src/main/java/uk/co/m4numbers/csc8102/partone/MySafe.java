@@ -16,8 +16,6 @@ package uk.co.m4numbers.csc8102.partone;
  * limitations under the License.
  */
 
-import java.io.File;
-
 /**
  * Class Name - MySafe
  * Package - uk.co.m4numbers.csc8102.partone
@@ -43,7 +41,7 @@ public class MySafe {
             }
 
             //If the file doesn't exist that we're meant to be reading from, cry
-            if (!(new File(argv[1]).exists()))
+            if (!Utils.file_exists(argv[1]))
             {
                 System.out.println("File does not exist...");
                 throw new Exception("File does not exist");

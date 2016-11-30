@@ -85,6 +85,11 @@ public class Utils {
         return br.readLine();
     }
 
+    public static boolean file_exists(String filename)
+    {
+        return (new File(filename)).exists();
+    }
+
     /**
      * Read a file and return its contents
      *
