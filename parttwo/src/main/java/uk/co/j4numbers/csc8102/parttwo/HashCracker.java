@@ -37,7 +37,9 @@ public class HashCracker {
         String test_hash;
         String output = "";
 
-        while (!test_password.equals(""))
+        int solved_hashes = 0;
+
+        while (!test_password.equals("") && solved_hashes < hash_collection.length)
         {
             test_hash = hash_generation(test_password);
 
@@ -48,11 +50,15 @@ public class HashCracker {
                     hash_collection[i] = "";
                     output += String.format("Hash: %s Password: %s\n", test_hash, test_password);
                     System.out.printf("Hash %s has password %s\n", test_hash, test_password);
+                    ++solved_hashes;
                 }
             }
 
             test_password = dictionary.next();
         }
+
+        //TODO: Add timer
+        System.out.printf("%d hashes solved in %d seconds\n", solved_hashes, 0);
 
         return output;
     }
