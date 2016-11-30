@@ -136,6 +136,10 @@ public class PasswordDictionary {
         {
             curr_file.close();
             ++password_definition;
+            if (password_definition > 5)
+            {
+                return "";
+            }
             if (password_definition == 3 || password_definition == 5)
             {
                 variations.clear();

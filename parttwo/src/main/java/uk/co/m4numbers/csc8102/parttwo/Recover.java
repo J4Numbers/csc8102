@@ -65,7 +65,7 @@ public class Recover {
             PasswordDictionary pD = new PasswordDictionary();
             HashCracker hC = new HashCracker();
 
-            hC.crack_hashes(hash_collection, pD);
+            Utils.write_to_file(hC.crack_hashes(hash_collection, pD).getBytes("utf-8"), argv[3]);
 
         }
         catch (Exception ex)
