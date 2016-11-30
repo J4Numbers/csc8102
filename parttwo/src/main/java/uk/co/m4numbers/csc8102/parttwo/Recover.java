@@ -16,6 +16,8 @@ package uk.co.m4numbers.csc8102.parttwo;
  * limitations under the License.
  */
 
+import javax.print.attribute.HashPrintJobAttributeSet;
+
 /**
  * Class Name - Recover
  * Package - uk.co.m4numbers.csc8102.parttwo
@@ -60,13 +62,18 @@ public class Recover {
             String hashes = Utils.read_file(argv[1]);
             String[] hash_collection = hashes.split("\n");
 
+            PasswordDictionary pD = new PasswordDictionary();
+            HashCracker hC = new HashCracker();
+
+            hC.crack_hashes(hash_collection, pD);
+
         }
         catch (Exception ex)
         {
             //If this was triggered, then it's more-than-likely their error, so
             // throw out a help thingy to them
             System.out.printf("Err: %s\n", ex.getMessage());
-            //ex.printStackTrace();
+            ex.printStackTrace();
             Utils.print_help();
         }
     }
