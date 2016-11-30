@@ -17,9 +17,12 @@ package uk.co.m4numbers.partone.tests;
  */
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import uk.co.m4numbers.csc8102.partone.Utils;
+
+import java.rmi.server.ExportException;
 
 /**
  * Class Name - UtilTesting
@@ -40,11 +43,10 @@ public class UtilTesting {
     public void evaluate_hex_string_to_byte_array()
     {
         String hex_string = "000102030405060708090a0b0c0d0e0f";
-        byte[] bytes = Utils.hex_string_to_byte_array(hex_string);
-        for (byte i = 0; i < 16; ++i)
-        {
-            Assert.assertEquals(bytes[i], i);
-        }
+        byte[] test_bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+        byte[] actual_bytes = Utils.hex_string_to_byte_array(hex_string);
+
+        Assert.assertArrayEquals(test_bytes, actual_bytes);
     }
 
     /**
@@ -56,10 +58,11 @@ public class UtilTesting {
     @Test
     public void evaluate_byte_array_to_hex_string()
     {
-        String hex_string = "000102030405060708090a0b0c0d0e0f";
         byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-        String comparator = Utils.byte_array_to_hex_string(bytes);
-        Assert.assertEquals(hex_string, comparator);
+        String test_string = "000102030405060708090a0b0c0d0e0f";
+        String actual_string = Utils.byte_array_to_hex_string(bytes);
+
+        Assert.assertEquals(test_string, actual_string);
     }
 
     @Test
@@ -95,6 +98,46 @@ public class UtilTesting {
     {
         Assert.assertTrue(Utils.file_exists("test.txt"));
         Assert.assertFalse(Utils.file_exists("cthulhu.txt"));
+    }
+
+    @Test
+    public void evaluate_write_to_file()
+    {
+        byte[] to_write = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+
+        try
+        {
+            Utils.write_to_file(to_write, "util_testing_write.txt");
+            byte[] written = Utils.read_file("util_testing_write.txt").getBytes();
+
+            Assert.assertArrayEquals(to_write, written);
+
+            Utils.delete_file("util_testing_write.txt");
+        }
+        catch (Exception e)
+        {
+            Assert.fail("Exception thrown writing to file");
+        }
+    }
+
+    @Test
+    public void evaluate_delete_file()
+    {
+        String del_file = "utils_testind_delete.txt";
+        byte[] del_byte = {0};
+
+        try
+        {
+            Utils.write_to_file(del_byte, del_file);
+            Assert.assertTrue(Utils.file_exists(del_file));
+
+            Utils.delete_file(del_file);
+            Assert.assertFalse(Utils.file_exists(del_file));
+        }
+        catch (Exception e)
+        {
+            Assert.fail("Exception thrown in deleting file");
+        }
     }
 
     /**
