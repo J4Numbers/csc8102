@@ -36,6 +36,8 @@ public class PasswordDictionary {
     private int current_iteration;
     private int current_word;
 
+    private String[] alphabet;
+
     private int password_definition;
 
     private String get_next_word() {
@@ -58,8 +60,12 @@ public class PasswordDictionary {
             {
                 return "";
             }
-            String ret = variations.get(current_word);
-            ++current_word;
+            String ret = variations.get(current_word) + alphabet[current_iteration];
+            ++current_iteration;
+            if (current_iteration > 69)
+            {
+                ++current_word;
+            }
             return ret;
         }
         if (curr_file.hasNextLine())
@@ -91,7 +97,7 @@ public class PasswordDictionary {
 
     private void generate_alphanumerics(String[] alphabet, int curr_letter, String curr_total)
     {
-        if (curr_letter == 4)
+        if (curr_letter == 3)
         {
             variations.add(curr_total);
         }
@@ -131,7 +137,6 @@ public class PasswordDictionary {
             if (password_definition == 3 || password_definition == 5)
             {
                 variations.clear();
-                password_definition = 5;
 
                 if (password_definition == 3)
                 {
@@ -157,9 +162,9 @@ public class PasswordDictionary {
                 }
                 else
                 {
-                    String[] alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_!@#$%^&*".split("");
                     generate_alphanumerics(alphabet, 0, "");
                     current_word = 0;
+                    current_iteration = 0;
 
                     nx = get_next_word();
                 }
@@ -176,8 +181,11 @@ public class PasswordDictionary {
     public PasswordDictionary() throws FileNotFoundException
     {
         password_definition = 1;
+
         curr_file = new Scanner(new File("dictionary/girl_names.txt"));
         variations = new ArrayList<String>();
+
+        alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_!@#$%^&*".split("");
     }
 
     public String next() throws FileNotFoundException
