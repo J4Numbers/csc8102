@@ -1,6 +1,6 @@
 package uk.co.m4numbers.csc8102.partone;
 
-/**
+/*
  * Copyright 2016 M. D. Ball (m.d.ball2@ncl.ac.uk)
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -115,10 +115,10 @@ public class Utils {
             } while (in != -1);
             fif.close();
         }
-        catch (FileNotFoundException fnf)
+        catch (FileNotFoundException ignored)
         {
         }
-        catch (IOException ioe)
+        catch (IOException ignored)
         {
         }
 

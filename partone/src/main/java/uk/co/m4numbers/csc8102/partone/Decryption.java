@@ -1,6 +1,6 @@
 package uk.co.m4numbers.csc8102.partone;
 
-/**
+/*
  * Copyright 2016 M. D. Ball (m.d.ball2@ncl.ac.uk)
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ import java.util.Arrays;
  * Author(s) - M. D. Ball
  * Last Mod: 29/11/2016
  */
-public class Decryption {
+class Decryption {
 
     void decrypt(String filename, String password) throws Exception
     {
