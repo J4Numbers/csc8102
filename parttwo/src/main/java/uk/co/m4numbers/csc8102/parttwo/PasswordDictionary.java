@@ -33,6 +33,7 @@ public class PasswordDictionary {
 
     private Scanner curr_file;
     private List<String> variations;
+
     private int current_iteration;
     private int current_word;
 
@@ -41,7 +42,7 @@ public class PasswordDictionary {
     private int password_definition;
 
     private String get_next_word() {
-        if (password_definition == 3) {
+        if (password_definition == 4) {
             if (current_word >= variations.size())
             {
                 return "";
@@ -77,24 +78,35 @@ public class PasswordDictionary {
         return "";
     }
 
-    private String switch_file()
+    private String change_definition() throws FileNotFoundException
     {
-        String new_file;
         switch (password_definition)
         {
             case 1:
-                new_file = "girl_names.txt";
+                curr_file = new Scanner(new File("dictionary/girl_names.txt"));
                 break;
             case 2:
-                new_file = "boy_names.txt";
+                curr_file = new Scanner(new File("dictionary/boy_names.txt"));
+                break;
+            case 3:
+                curr_file = new Scanner(new File(
+                        "dictionary/word_list_moby_all_moby_words.flat.txt"));
                 break;
             case 4:
-                new_file = "word_list_moby_all_moby_words.flat.txt";
+                generate_name_dictionary();
+                current_word = 0;
+                current_iteration = 1;
+                break;
+            case 5:
+                generate_alphanumerics(alphabet, 0, "");
+                current_word = 0;
+                current_iteration = 0;
                 break;
             default:
-                new_file = "";
+                return "";
         }
-        return new_file;
+
+        return get_next_word();
     }
 
     private void generate_alphanumerics(String[] alphabet, int curr_letter, String curr_total)
@@ -111,20 +123,37 @@ public class PasswordDictionary {
         }
     }
 
-    private void generate_combinatorials(String[] letters, int curr_letter, String curr_total)
+    private void generate_name_dictionary()
     {
-        if (curr_letter != curr_total.length())
-        {
-            System.out.printf("ERR\n");
+        String[] girl_names = Utils.read_file(
+                "dictionary/girl_names.txt").split("\n");
+        String[] boy_names = Utils.read_file(
+                "dictionary/boy_names.txt").split("\n");
+
+        for (String girl : girl_names) {
+            String[] letters = girl.split("");
+            generate_name_combinations(letters, 0, "");
         }
+        for (String boy : boy_names) {
+            String[] letters = boy.split("");
+            generate_name_combinations(letters, 0, "");
+        }
+    }
+
+    private void generate_name_combinations(String[] letters, int curr_letter, String curr_total)
+    {
         if (curr_letter == letters.length)
         {
             variations.add(curr_total);
         }
         else
         {
-            generate_combinatorials(letters, curr_letter + 1, curr_total + letters[curr_letter]);
-            generate_combinatorials(letters, curr_letter + 1, curr_total + letters[curr_letter].toUpperCase());
+            generate_name_combinations(
+                    letters, curr_letter + 1,
+                    curr_total + letters[curr_letter]);
+            generate_name_combinations(
+                    letters, curr_letter + 1,
+                    curr_total + letters[curr_letter].toUpperCase());
         }
     }
 
@@ -135,51 +164,9 @@ public class PasswordDictionary {
         if (nx.equals(""))
         {
             curr_file.close();
+            variations.clear();
             ++password_definition;
-            if (password_definition > 5)
-            {
-                return "";
-            }
-            if (password_definition == 3 || password_definition == 5)
-            {
-                variations.clear();
-
-                if (password_definition == 3)
-                {
-                    String[] girl_names = Utils.read_file("dictionary/girl_names.txt").split("\n");
-                    String[] boy_names = Utils.read_file("dictionary/boy_names.txt").split("\n");
-
-                    for (String girl :
-                            girl_names) {
-                        String[] letters = girl.split("");
-                        generate_combinatorials(letters, 0, "");
-                    }
-                    for (String boy :
-                            boy_names) {
-                        String[] letters = boy.split("");
-                        generate_combinatorials(letters, 0, "");
-                    }
-
-                    variations.add("");
-                    current_word = 0;
-                    current_iteration = 1;
-
-                    nx = get_next_word();
-                }
-                else
-                {
-                    generate_alphanumerics(alphabet, 0, "");
-                    current_word = 0;
-                    current_iteration = 0;
-
-                    nx = get_next_word();
-                }
-            }
-            else
-            {
-                curr_file = new Scanner(new File("dictionary/" + switch_file()));
-                nx = get_next_word();
-            }
+            nx = change_definition();
         }
         return nx;
     }
