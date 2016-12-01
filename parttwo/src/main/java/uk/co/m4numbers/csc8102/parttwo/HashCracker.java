@@ -32,6 +32,13 @@ import java.util.Arrays;
  */
 public class HashCracker {
 
+    private boolean generate_dictionary;
+
+    public HashCracker(boolean generate_dictionary)
+    {
+        this.generate_dictionary = generate_dictionary;
+    }
+
     public String crack_hashes(byte[][] hash_collection, PasswordDictionary dictionary)
             throws Exception
     {
@@ -43,11 +50,15 @@ public class HashCracker {
         long clock = System.currentTimeMillis();
         long tests = 0;
 
+
         FileAppending fa = new FileAppending("dictionary/complete.txt");
 
         while (!test_password.equals("") && solved_hashes < hash_collection.length)
         {
-            fa.append(test_password);
+            if (generate_dictionary)
+            {
+                fa.append(test_password);
+            }
             test_hash = hash_generation(test_password);
             ++tests;
 
