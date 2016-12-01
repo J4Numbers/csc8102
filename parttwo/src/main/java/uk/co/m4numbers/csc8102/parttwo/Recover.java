@@ -61,7 +61,7 @@ public class Recover {
             byte[][] hash_collection =
                     Utils.hex_string_array_to_byte_arrays(hashes.split("\r?\n"));
 
-            PasswordDictionary pD = new PasswordDictionary(true, "dictionary/complete.txt");
+            PasswordDictionary pD = new PasswordDictionary(false, "dictionary/complete.txt");
             HashCracker hC = new HashCracker(false);
 
             if (Utils.file_exists(argv[3]))

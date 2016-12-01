@@ -43,6 +43,10 @@ public class FileReading {
         int in;
         do {
             in = fis.read();
+            if (in == (int)'\r')
+            {
+                in = fis.read();
+            }
             if (in != (int)'\n' && in != -1)
             {
                 line = line + (char) in;
