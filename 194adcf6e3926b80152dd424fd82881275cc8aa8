@@ -1,0 +1,6 @@
+[ver:1,total:300]
+parttwo/src/main/java/uk/co/m4numbers/csc8102/parttwo/PasswordDictionary.java:193,1480618800:193,r
+.gitignore:82,1480618800:82,m
+.git/info/exclude:13,1480618800:13,r
+parttwo/src/main/java/uk/co/m4numbers/csc8102/parttwo/HashCracker.java:6,1480618800:6,r
+parttwo/src/test/java/uk/co/m4numbers/csc8102/parttwo/tests/UtilTesting.java:6,1480618800:6,r
