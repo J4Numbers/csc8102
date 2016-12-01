@@ -31,6 +31,11 @@ import uk.co.m4numbers.csc8102.parttwo.Utils;
  */
 public class UtilTesting {
 
+    /**
+     * Evaluate whether the conversion from an array of hexadecimal strings
+     * to an array of bytes representing those strings is successful and
+     * correct
+     */
     @Test
     public void evaluate_hex_string_array_to_byte_arrays()
     {
