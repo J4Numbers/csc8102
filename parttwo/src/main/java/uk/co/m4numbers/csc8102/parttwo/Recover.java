@@ -16,8 +16,6 @@ package uk.co.m4numbers.csc8102.parttwo;
  * limitations under the License.
  */
 
-import javax.print.attribute.HashPrintJobAttributeSet;
-
 /**
  * Class Name - Recover
  * Package - uk.co.m4numbers.csc8102.parttwo
