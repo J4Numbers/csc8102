@@ -16,6 +16,7 @@ package uk.co.m4numbers.csc8102.parttwo;
  * limitations under the License.
  */
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import java.security.MessageDigest;
@@ -42,8 +43,11 @@ public class HashCracker {
         long clock = System.currentTimeMillis();
         long tests = 0;
 
+        FileAppending fa = new FileAppending("dictionary/complete.txt");
+
         while (!test_password.equals("") && solved_hashes < hash_collection.length)
         {
+            fa.append(test_password);
             test_hash = hash_generation(test_password);
             ++tests;
 
@@ -62,6 +66,8 @@ public class HashCracker {
 
             test_password = dictionary.next();
         }
+
+        fa.close();
 
         System.out.printf("%d hashes solved in %.2f seconds after %d password tests\n",
                 solved_hashes, (double)(System.currentTimeMillis() - clock) / 1000, tests);
