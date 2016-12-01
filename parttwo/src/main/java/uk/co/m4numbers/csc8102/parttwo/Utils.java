@@ -28,6 +28,16 @@ import java.io.*;
  */
 public class Utils {
 
+    public static byte[][] hex_string_array_to_byte_arrays(String[] strings)
+    {
+        byte[][] byte_collection = new byte[strings.length][];
+        for (int i = 0; i < strings.length; ++i)
+        {
+            byte_collection[i] = Utils.hex_string_to_byte_array(strings[i]);
+        }
+        return byte_collection;
+    }
+
     /**
      * Found from StackOverflow: http://stackoverflow.com/questions/140131/
      *

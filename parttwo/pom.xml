@@ -30,7 +30,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>uk.co.m4numbers.csc8102.partone.MySafe</mainClass>
+                            <mainClass>uk.co.m4numbers.csc8102.parttwo.Recover</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -20,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 /**
  * Class Name - HashCracker
@@ -30,26 +31,31 @@ import java.security.NoSuchAlgorithmException;
  */
 public class HashCracker {
 
-    public String crack_hashes(String[] hash_collection, PasswordDictionary dictionary)
+    public String crack_hashes(byte[][] hash_collection, PasswordDictionary dictionary)
             throws Exception
     {
         String test_password = dictionary.next();
-        String test_hash;
+        byte[] test_hash;
         String output = "";
 
         int solved_hashes = 0;
+        long clock = System.currentTimeMillis();
+        long tests = 0;
 
         while (!test_password.equals("") && solved_hashes < hash_collection.length)
         {
             test_hash = hash_generation(test_password);
+            ++tests;
 
             for (int i = 0; i < hash_collection.length; ++i)
             {
-                if (hash_collection[i].equalsIgnoreCase(test_hash))
+                if (Arrays.equals(hash_collection[i], test_hash))
                 {
-                    hash_collection[i] = "";
-                    output += String.format("Hash: %s Password: %s\n", test_hash, test_password);
-                    System.out.printf("Hash %s has password %s\n", test_hash, test_password);
+                    output += String.format(
+                            "Hash: %s Password: %s\n",
+                            Utils.byte_array_to_hex_string(hash_collection[i]),
+                            test_password);
+                    hash_collection[i] = null;
                     ++solved_hashes;
                 }
             }
@@ -57,18 +63,18 @@ public class HashCracker {
             test_password = dictionary.next();
         }
 
-        //TODO: Add timer
-        System.out.printf("%d hashes solved in %d seconds\n", solved_hashes, 0);
+        System.out.printf("%d hashes solved in %.2f seconds after %d password tests\n",
+                solved_hashes, (double)(System.currentTimeMillis() - clock) / 1000, tests);
 
         return output;
     }
 
-    private String hash_generation(String password) throws NoSuchAlgorithmException,
+    private byte[] hash_generation(String password) throws NoSuchAlgorithmException,
             UnsupportedEncodingException
     {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(password.getBytes("utf-8"));
-        return Utils.byte_array_to_hex_string(md.digest());
+        return md.digest();
     }
 
 }
