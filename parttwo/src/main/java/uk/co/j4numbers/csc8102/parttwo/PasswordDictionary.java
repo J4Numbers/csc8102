@@ -183,8 +183,8 @@ public class PasswordDictionary {
             password_definition = 1;
             curr_file = new Scanner(new File("dictionary/girl_names.txt"));
         }
-
         variations = new ArrayList<String>();
+
         alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_!@#$%^&*".split("");
     }
 
