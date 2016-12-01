@@ -1,2 +1,6 @@
 [ver:1,total:60]
 parttwo/src/main/java/uk/co/m4numbers/csc8102/parttwo/PasswordDictionary.java:60,1480618800:60,m
+
+[ver:1,total:1920]
+parttwo/src/main/java/uk/co/m4numbers/csc8102/parttwo/PasswordDictionary.java:1870,1480615200:1050,1480618800:820,m
+parttwo/src/main/java/uk/co/m4numbers/csc8102/parttwo/HashCracker.java:50,1480615200:30,1480618800:20,r
