@@ -1,0 +1,6 @@
+[ver:1,total:2100]
+parttwo/src/main/java/uk/co/m4numbers/csc8102/parttwo/HashCracker.java:1152,1480543200:30,1480593600:1122,m
+parttwo/src/main/java/uk/co/m4numbers/csc8102/parttwo/PasswordDictionary.java:335,1480543200:150,1480593600:185,r
+parttwo/src/main/java/uk/co/m4numbers/csc8102/parttwo/Utils.java:303,1480543200:120,1480593600:183,m
+parttwo/pom.xml:175,1480593600:175,m
+parttwo/src/main/java/uk/co/m4numbers/csc8102/parttwo/Recover.java:135,1480593600:135,m
