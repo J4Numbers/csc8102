@@ -26,8 +26,18 @@ import java.io.*;
  * Author(s) - M. D. Ball
  * Last Mod: 29/11/2016
  */
-public class Utils {
+public class Utils
+{
 
+    /**
+     * Convert an array of strings containing hexadecimal hashes into an array
+     * of byte sequences that can be directly compared against one another
+     * instead of converting back and forth constantly between the two types
+     *
+     * @param strings The strings we're converting into byte arrays
+     * @return An array of byte arrays containing the bytecode for those
+     *  strings
+     */
     public static byte[][] hex_string_array_to_byte_arrays(String[] strings)
     {
         byte[][] byte_collection = new byte[strings.length][];
