@@ -29,7 +29,8 @@ import java.util.Scanner;
  * Author(s) - M. D. Ball
  * Last Mod - 30/11/2016
  */
-public class PasswordDictionary {
+public class PasswordDictionary
+{
 
     private Scanner curr_file;
     private List<String> variations;
@@ -41,8 +42,10 @@ public class PasswordDictionary {
 
     private int password_definition;
 
-    private String get_next_word() {
-        if (password_definition == 4) {
+    private String get_next_word()
+    {
+        if (password_definition == 4)
+        {
             if (current_word >= variations.size())
             {
                 return "";
@@ -62,7 +65,8 @@ public class PasswordDictionary {
             {
                 return "";
             }
-            String ret = variations.get(current_word) + alphabet[current_iteration];
+            String ret = variations
+                    .get(current_word) + alphabet[current_iteration];
             ++current_iteration;
             if (current_iteration >= alphabet.length)
             {
@@ -109,7 +113,9 @@ public class PasswordDictionary {
         return get_next_word();
     }
 
-    private void generate_alphanumerics(String[] alphabet, int curr_letter, String curr_total)
+    private void generate_alphanumerics(
+            String[] alphabet, int curr_letter, String curr_total
+    )
     {
         if (curr_letter == 3)
         {
@@ -117,8 +123,10 @@ public class PasswordDictionary {
         }
         else
         {
-            for (String letter : alphabet) {
-                generate_alphanumerics(alphabet, curr_letter + 1, curr_total + letter);
+            for (String letter : alphabet)
+            {
+                generate_alphanumerics(
+                        alphabet, curr_letter + 1, curr_total + letter);
             }
         }
     }
@@ -130,17 +138,21 @@ public class PasswordDictionary {
         String[] boy_names = Utils.read_file(
                 "dictionary/boy_names.txt").split("\n");
 
-        for (String girl : girl_names) {
+        for (String girl : girl_names)
+        {
             String[] letters = girl.split("");
             generate_name_combinations(letters, 0, "");
         }
-        for (String boy : boy_names) {
+        for (String boy : boy_names)
+        {
             String[] letters = boy.split("");
             generate_name_combinations(letters, 0, "");
         }
     }
 
-    private void generate_name_combinations(String[] letters, int curr_letter, String curr_total)
+    private void generate_name_combinations(
+            String[] letters, int curr_letter, String curr_total
+    )
     {
         if (curr_letter == letters.length)
         {
@@ -150,10 +162,12 @@ public class PasswordDictionary {
         {
             generate_name_combinations(
                     letters, curr_letter + 1,
-                    curr_total + letters[curr_letter]);
+                    curr_total + letters[curr_letter]
+            );
             generate_name_combinations(
                     letters, curr_letter + 1,
-                    curr_total + letters[curr_letter].toUpperCase());
+                    curr_total + letters[curr_letter].toUpperCase()
+            );
         }
     }
 
@@ -176,7 +190,8 @@ public class PasswordDictionary {
         password_definition = 1;
         curr_file = new Scanner(new File("dictionary/girl_names.txt"));
         variations = new ArrayList<String>();
-        alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_!@#$%^&*".split("");
+        alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_!@#$%^&*"
+                .split("");
     }
 
     public String next() throws FileNotFoundException

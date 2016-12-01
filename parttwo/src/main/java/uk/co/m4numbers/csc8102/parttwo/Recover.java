@@ -23,7 +23,8 @@ package uk.co.m4numbers.csc8102.parttwo;
  * Author(s) - M. D. Ball
  * Last Mod - 30/11/2016
  */
-public class Recover {
+public class Recover
+{
 
     /**
      * It's a main method... what more do you really need to know?
@@ -33,9 +34,11 @@ public class Recover {
     public static void main(String[] argv)
     {
 
-        try {
+        try
+        {
             //If exactly 4 arguments were not provided, throw out some help text
-            if (argv.length != 4) {
+            if (argv.length != 4)
+            {
                 throw new Exception("Incorrect usage of the program...");
             }
 
@@ -59,16 +62,20 @@ public class Recover {
 
             String hashes = Utils.read_file(argv[1]);
             byte[][] hash_collection =
-                    Utils.hex_string_array_to_byte_arrays(hashes.split("\r?\n"));
+                    Utils.hex_string_array_to_byte_arrays(
+                            hashes.split("\r?\n"));
 
             PasswordDictionary pD = new PasswordDictionary();
-            HashCracker hC = new HashCracker();
+            HashCracker        hC = new HashCracker();
 
             if (Utils.file_exists(argv[3]))
             {
                 Utils.delete_file(argv[3]);
             }
-            Utils.write_to_file(hC.crack_hashes(hash_collection, pD).getBytes("utf-8"), argv[3]);
+            Utils.write_to_file(
+                    hC.crack_hashes(hash_collection, pD).getBytes("utf-8"),
+                    argv[3]
+            );
 
         }
         catch (Exception ex)

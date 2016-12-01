@@ -18,18 +18,18 @@ package uk.co.m4numbers.csc8102.parttwo.tests;
 
 import org.junit.Assert;
 import org.junit.Test;
-
 import uk.co.m4numbers.csc8102.parttwo.Utils;
 
 /**
  * Class Name - UtilTesting
  * Package - uk.co.m4numbers.parttwo.tests
  * Desc of Class - Test Driven Development class for testing the utility
- *   functions available to all classes
+ * functions available to all classes
  * Author(s) - M. D. Ball
  * Last Mod - 30/11/2016
  */
-public class UtilTesting {
+public class UtilTesting
+{
 
     /**
      * Evaluate whether the conversion from an array of hexadecimal strings
@@ -44,12 +44,13 @@ public class UtilTesting {
         hex_strings[1] = "08090A0B0C0D0E0F";
 
         byte[][] test_bytes = new byte[2][];
-        byte[] l_bytes = {0, 1, 2, 3, 4, 5, 6, 7};
-        byte[] r_bytes = {8, 9, 10, 11, 12, 13, 14, 15};
+        byte[]   l_bytes    = {0, 1, 2, 3, 4, 5, 6, 7};
+        byte[]   r_bytes    = {8, 9, 10, 11, 12, 13, 14, 15};
         test_bytes[0] = l_bytes;
         test_bytes[1] = r_bytes;
 
-        byte[][] actual_bytes = Utils.hex_string_array_to_byte_arrays(hex_strings);
+        byte[][] actual_bytes = Utils
+                .hex_string_array_to_byte_arrays(hex_strings);
 
         for (int i = 0; i < actual_bytes.length; ++i)
         {
@@ -65,8 +66,10 @@ public class UtilTesting {
     @Test
     public void evaluate_hex_string_to_byte_array()
     {
-        String hex_string = "000102030405060708090a0b0c0d0e0f";
-        byte[] test_bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+        String hex_string   = "000102030405060708090a0b0c0d0e0f";
+        byte[] test_bytes   = {
+                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+        };
         byte[] actual_bytes = Utils.hex_string_to_byte_array(hex_string);
 
         Assert.assertArrayEquals(test_bytes, actual_bytes);
@@ -81,8 +84,10 @@ public class UtilTesting {
     @Test
     public void evaluate_byte_array_to_hex_string()
     {
-        byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-        String test_string = "000102030405060708090a0b0c0d0e0f";
+        byte[] bytes         = {
+                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+        };
+        String test_string   = "000102030405060708090a0b0c0d0e0f";
         String actual_string = Utils.byte_array_to_hex_string(bytes);
 
         Assert.assertEquals(test_string, actual_string);
@@ -91,8 +96,8 @@ public class UtilTesting {
     @Test
     public void evaluate_split_byte_array()
     {
-        byte[] whole = {0, 1, 2, 3, 4, 5, 6, 7};
-        byte[] test_half  = {0, 1, 2, 3};
+        byte[] whole       = {0, 1, 2, 3, 4, 5, 6, 7};
+        byte[] test_half   = {0, 1, 2, 3};
         byte[] actual_half = Utils.split_byte_array(whole, 0, 4);
 
         for (int i = 0; i < 4; ++i)
@@ -104,10 +109,12 @@ public class UtilTesting {
     @Test
     public void evaluate_concatenate_byte_arrays()
     {
-        byte[] left = {0, 1, 2, 3, 4, 5, 6, 7};
+        byte[] left  = {0, 1, 2, 3, 4, 5, 6, 7};
         byte[] right = {8, 9, 10, 11, 12, 13, 14, 15};
 
-        byte[] test_both = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+        byte[] test_both   = {
+                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+        };
         byte[] actual_both = Utils.concatenate_byte_arrays(left, right);
 
         for (int i = 0; i < 16; ++i)
@@ -131,7 +138,8 @@ public class UtilTesting {
         try
         {
             Utils.write_to_file(to_write, "util_testing_write.txt");
-            byte[] written = Utils.read_file("util_testing_write.txt").getBytes();
+            byte[] written = Utils.read_file("util_testing_write.txt")
+                    .getBytes();
 
             Assert.assertArrayEquals(to_write, written);
 
