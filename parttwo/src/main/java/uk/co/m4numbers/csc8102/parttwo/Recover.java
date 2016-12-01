@@ -60,18 +60,27 @@ public class Recover
                 throw new Exception("No output file flag '-o' found");
             }
 
+            //Read in all the hashes from the given file and split them into an
+            // array of byte arrays that we can directly compare against our
+            // password candidates
             String hashes = Utils.read_file(argv[1]);
             byte[][] hash_collection =
                     Utils.hex_string_array_to_byte_arrays(
                             hashes.split("\r?\n"));
 
+            //Create the two classes we use to crack these hashes
             PasswordDictionary pD = new PasswordDictionary();
             HashCracker        hC = new HashCracker();
 
+            //And delete the output file if it already exists to save us from
+            // doing it a bit later
             if (Utils.file_exists(argv[3]))
             {
                 Utils.delete_file(argv[3]);
             }
+
+            //Now crack the hashes and write whatever outputs we get to the
+            // given file
             Utils.write_to_file(
                     hC.crack_hashes(hash_collection, pD).getBytes("utf-8"),
                     argv[3]
