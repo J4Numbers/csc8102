@@ -171,20 +171,11 @@ public class PasswordDictionary {
         return nx;
     }
 
-    public PasswordDictionary(boolean use_own_dictionary, String dict) throws FileNotFoundException
+    public PasswordDictionary() throws FileNotFoundException
     {
-        if (use_own_dictionary)
-        {
-            password_definition = 10;
-            curr_file = new Scanner(new File(dict));
-        }
-        else
-        {
-            password_definition = 1;
-            curr_file = new Scanner(new File("dictionary/girl_names.txt"));
-        }
+        password_definition = 1;
+        curr_file = new Scanner(new File("dictionary/girl_names.txt"));
         variations = new ArrayList<String>();
-
         alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_!@#$%^&*".split("");
     }
 
