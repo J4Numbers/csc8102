@@ -580,11 +580,10 @@ the signature attached to the file.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.8\linewidth]{images/secret_decryption}
+	\includegraphics[width=0.9\linewidth]{images/secret_failure}
 	\caption{A failure at decrypting our dangerous secret}
 	\label{fig:secretfailure}
 \end{figure}
-
 
 If the hash that was created from the password and the contents of the file
 does not match the one attached to the file then we stop right there and report
@@ -593,132 +592,144 @@ has been broken (see Figure \ref{fig:secretfailure}). If the signatures matched,
 we decrypt the ciphertext and write the plaintext to the original file,
 deleting the encrypted file afterwards.
 
-However, this is not really a very secure solution to any problem. While this
-program does provide confidentiality to the data in that file at that point in
-time, there is nothing stopping a malicious user from deleting that file
-completely, at which point we will lose all records of who Daredevil is.
-Additional controls could be put in place to protect the integrity of the
-files, but there is not really much that could be done if an attacker has
-physical access to the machine.
+\subsection{Future Improvements}
 
-Another potential weakness of this program is that, if an attacker does get
-access to this machine, then they are also able to also encrypt other files
-with their own passwords that the user does not know and engineer a denial of
-service attack against the user, denying them from accessing their files. Part
-of the reason for this could be that there are no privileges required for this
-program - it can be run by anyone on the machine to encrypt the files they have
-access to.
+Due to the nature of Java, this program can be exported as a library to other
+applications that may wish to include encryption and decryption in their
+programs. However, a few improvements would probably need to be made for this.
+One such improvement could be that the file extension becomes custom for the
+program and that, if a user changes the \texttt{.8102} extension to something
+else, then the program will still attempt a decryption if the file is long
+enough.
 
+Another potential improvement for this program in terms of usability would be
+to create a graphical interface that is loaded instead of the command line.
+This would help to remove the errors that happen when the files that the user
+provides are not found or are not fit for encryption or decryption. It would
+also allow for some advanced user feedback where the program reports back to
+the user on how successful or unsuccessful the operations were.
 
 \section{Hash Cracking}\label{sec:hashcracking}
-Subsection text here.
 
-% needed in second column of first page if using \IEEEpubid
-%\IEEEpubidadjcol
+The program for part two of this coursework is a hash cracking application
+which allows a user to brute force eight different passwords that were hashed
+using SHA-256. It does this by performing an exhaustive search against a number
+of different dictionaries. We say that there are five different dictionaries
+available for this exhaustive search:
 
-% An example of a floating figure using the graphicx package.
-% Note that \label must occur AFTER (or within) \caption.
-% For figures, \caption should occur after the \includegraphics.
-% Note that IEEEtran v1.7 and later has special internal code that
-% is designed to preserve the operation of \label within \caption
-% even when the captionsoff option is in effect. However, because
-% of issues like this, it may be the safest practice to put all your
-% \label just after \caption rather than within \caption{}.
-%
-% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
-% option should be used if it is desired that the figures are to be
-% displayed while in draft mode.
-%
-%\begin{figure}[!t]
-%\centering
-%\includegraphics[width=2.5in]{myfigure}
-% where an .eps filename suffix will be assumed under latex, 
-% and a .pdf suffix will be assumed for pdflatex; or what has been declared
-% via \DeclareGraphicsExtensions.
-%\caption{Simulation results for the network.}
-%\label{fig_sim}
-%\end{figure}
+\begin{enumerate}
+	\item One of the ten most popular girl names in England (lower-case).
+	\item One of the ten most popular boy names in England (lower-case).
+	\item A name specified in the first two dictionaries but with no specified
+	case and a number between 1 and 9999 inclusive afterwards.
+	\item A lower-case English word found in Moby Dick.
+	\item A combination of four alphanumeric characters of no specified case
+	and a few special characters.
+\end{enumerate}
 
-% Note that the IEEE typically puts floats only at the top, even when this
-% results in a large percentage of a column being occupied by floats.
-% However, the Computer Society has been known to put floats at the bottom.
+The program takes two arguments: an input file that contains hashes the user
+wants to crack, and an output file where whatever results from the cracking
+will be placed. In order to build this program, the user needs to run the two
+maven commands: \texttt{mvn clean install} and \texttt{mvn jar:jar} to create
+the resultant \texttt{.jar} file inside the \texttt{target/} folder. From that,
+the user can use the program to attempt to crack several hashes.
 
+A more complete explanation of the command can be found in the
+\texttt{README.md} which is packaged with this program. If the user does not
+provide both the \texttt{-i [input hashes]} and \texttt{-o [output file]}
+flags, then the program will not run. The same thing happens if the user
+provides a non-existent input hash file. After execution, the program will
+create and fill the output file with the results from the hash cracking. If the
+output file already exists, then it will be overwritten with the new outputs.
 
-% An example of a double column floating figure using two subfigures.
-% (The subfig.sty package must be loaded for this to work.)
-% The subfigure \label commands are set within each subfloat command,
-% and the \label for the overall figure must come after \caption.
-% \hfil is used as a separator to get equal spacing.
-% Watch out that the combined width of all the subfigures on a 
-% line do not exceed the text width or a line break will occur.
-%
-%\begin{figure*}[!t]
-%\centering
-%\subfloat[Case I]{\includegraphics[width=2.5in]{box}%
-%\label{fig_first_case}}
-%\hfil
-%\subfloat[Case II]{\includegraphics[width=2.5in]{box}%
-%\label{fig_second_case}}
-%\caption{Simulation results for the network.}
-%\label{fig_sim}
-%\end{figure*}
-%
-% Note that often IEEE papers with subfigures do not employ subfigure
-% captions (using the optional argument to \subfloat[]), but instead will
-% reference/describe all of them (a), (b), etc., within the main caption.
-% Be aware that for subfig.sty to generate the (a), (b), etc., subfigure
-% labels, the optional argument to \subfloat must be present. If a
-% subcaption is not desired, just leave its contents blank,
-% e.g., \subfloat[].
+The output file will contain each cracked hash on a new line with the password
+used to crack it in the format of: \texttt{Hash: [hash] Password: [password]}.
+Typical execution of the program takes less than thirty seconds.
 
+\subsection{Implementation}
 
-% An example of a floating table. Note that, for IEEE style tables, the
-% \caption command should come BEFORE the table and, given that table
-% captions serve much like titles, are usually capitalized except for words
-% such as a, an, and, as, at, but, by, for, in, nor, of, on, or, the, to
-% and up, which are usually not capitalized unless they are the first or
-% last word of the caption. Table text will default to \footnotesize as
-% the IEEE normally uses this smaller font for tables.
-% The \label must come after \caption as always.
-%
-%\begin{table}[!t]
-%% increase table row spacing, adjust to taste
-%\renewcommand{\arraystretch}{1.3}
-% if using array.sty, it might be a good idea to tweak the value of
-% \extrarowheight as needed to properly center the text within the cells
-%\caption{An Example of a Table}
-%\label{table_example}
-%\centering
-%% Some packages, such as MDW tools, offer better commands for making tables
-%% than the plain LaTeX2e tabular which is used here.
-%\begin{tabular}{|c||c|}
-%\hline
-%One & Two\\
-%\hline
-%Three & Four\\
-%\hline
-%\end{tabular}
-%\end{table}
+The coursework provides the hashes seen in Figure \ref{fig:crackedhashes} to be
+cracked. Each hash must be on a new line and encrypted in SHA-256. They must
+also be converted from binary into hexadecimal strings so that they can be read
+in.
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{images/cracked_hashes}
+	\caption{A set of hashes to be cracked}
+	\label{fig:crackedhashes}
+\end{figure}
 
-% Note that the IEEE does not put floats in the very first column
-% - or typically anywhere on the first page for that matter. Also,
-% in-text middle ("here") positioning is typically not used, but it
-% is allowed and encouraged for Computer Society conferences (but
-% not Computer Society journals). Most IEEE journals/conferences use
-% top floats exclusively. 
-% Note that, LaTeX2e, unlike IEEE journals/conferences, places
-% footnotes above bottom floats. This can be corrected via the
-% \fnbelowfloat command of the stfloats package.
+Running the command \texttt{-i [input] -o [output]} with that file as an input
+will run the program and report back once we have either exhausted all
+dictionaries which are defined in Section \ref{sec:hashcracking} or we have
+solved all of the hashes. In this case (as seen in Figure
+\ref{fig:crackedcommands}), we return once we have solved all eight hashes and
+provide some metrics as to the running of the program.
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.9\linewidth]{images/cracked_commands}
+	\caption{A command which was run to crack hashes}
+	\label{fig:crackedcommands}
+\end{figure}
 
-% trigger a \newpage just before the given reference
-% number - used to balance the columns on the last page
-% adjust value as needed - may need to be readjusted if
-% the document is modified later
-%\IEEEtriggeratref{8}
-% The "triggered" command can be changed if desired:
-%\IEEEtriggercmd{\enlargethispage{-5in}}
+This command hides a large amount of complexity in generation and testing. As
+seen in Figure \ref{fig:crackedcommands}, over 35 million password comparisons
+were performed using the dictionaries that we have defined. The program
+generates most of those passwords at runtime. A test was performed during
+development to see whether performance improvements were observed when a large
+list of pre-generated passwords was provided to the program instead. This test
+resulted in a runtime that was twice that of the runtime observed above,
+possibly due to the inefficiencies of opening files in Java.
+
+The generation of password combinations in the program has been optimised to
+reduce the amount of redundant processing and keep the memory consumption to a
+minimum. This is done by generating the base strings for password combinations
+during initial generation, then adding on the specific iteration later down the
+line when the password is needed.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.9\linewidth]{images/cracked_passwords}
+	\caption{A set of hashes that were cracked}
+	\label{fig:crackedpasswords}
+\end{figure}
+
+All of which eventually results in the file in Figure
+\ref{fig:crackedpasswords} which shows the output from the program. The
+passwords that corresponded to the hashes in \ref{fig:crackedhashes} are as
+follows:
+
+\begin{itemize}
+	\item Hash: \texttt{5e0176c...} Password: \texttt{sophie}
+	\item Hash: \texttt{b9dd960...} Password: \texttt{charlie}
+	\item Hash: \texttt{ab8a711...} Password: \texttt{inopithelioma}
+	\item Hash: \texttt{4abb806...} Password: \texttt{unbreakable}
+	\item Hash: \texttt{d813086...} Password: \texttt{JeSsicA42}
+	\item Hash: \texttt{ffff0e6...} Password: \texttt{haRRY1980}
+	\item Hash: \texttt{20abfe9...} Password: \texttt{K4t!}
+	\item Hash: \texttt{20d9787...} Password: \texttt{@c3*}
+\end{itemize}
+
+\subsection{Future Improvements}
+
+Improvements to this program can only really come in two ways: increasing the
+size of the dictionary from which we can draw passwords, and optimising the way
+we generate and compare passwords so that this program can scale as we increase
+the number of options in the dictionary. Part of the problem in doing the former
+is that at some point, we run into problems with memory and time. It takes time
+and space to generate and store a string of four alphanumeric characters in RAM
+during program execution and most applications these days place a minimum
+character limit of around six characters.
+
+If we say that all the characters we used are valid, it is the difference
+between $71^{4}$ combinations and $71^{6}$ combinations which is roughly 128
+billion more combinations that need to be tested. This would be a true brute
+force attack against those passwords and would only consider passwords of six
+characters long. While attacking passwords of low length and predictable
+contents is relatively easy, once the passwords reach a certain length and
+entropy then attacking them becomes unfeasible.
 
 % references section
 
