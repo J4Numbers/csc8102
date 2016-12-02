@@ -32,7 +32,7 @@ import java.util.Arrays;
  * Author(s) - M. D. Ball
  * Last Mod: 29/11/2016
  */
-class EncryptionDecryption
+public class EncryptionDecryption
 {
 
     /**
@@ -158,7 +158,7 @@ class EncryptionDecryption
      *
      * @throws Exception If something goes wrong within individual methods
      */
-    void encrypt(String filename, String password) throws Exception
+    public void encrypt(String filename, String password) throws Exception
     {
         //Read in the plaintext and get the two halves of our keys for later
         String      plaintext = Utils.read_file(filename);
@@ -197,7 +197,7 @@ class EncryptionDecryption
      *
      * @throws Exception If something went wrong in lower methods
      */
-    void decrypt(String filename, String password) throws Exception
+    public void decrypt(String filename, String password) throws Exception
     {
         //Read in and decode the data from the given file
         byte[] encrypted_file = new sun.misc.BASE64Decoder().decodeBuffer(

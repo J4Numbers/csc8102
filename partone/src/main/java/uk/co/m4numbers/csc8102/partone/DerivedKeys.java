@@ -24,11 +24,11 @@ package uk.co.m4numbers.csc8102.partone;
  * Author(s) - M. D. Ball
  * Last Mod - 29/11/2016
  */
-class DerivedKeys
+public class DerivedKeys
 {
 
-    final byte[] aes_key;
-    final byte[] mac_code;
+    public final byte[] aes_key;
+    public final byte[] mac_code;
 
     /**
      * Constant initiator which just plugs the inputs into the final variables
@@ -37,7 +37,7 @@ class DerivedKeys
      * @param aes_key  The AES-128 key we use for encryption and decryption
      * @param mac_code The HMAC secret which we use for... well... the HMAC
      */
-    DerivedKeys(byte[] aes_key, byte[] mac_code)
+    public DerivedKeys(byte[] aes_key, byte[] mac_code)
     {
         this.aes_key = aes_key;
         this.mac_code = mac_code;
