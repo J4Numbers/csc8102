@@ -126,24 +126,24 @@ public class UtilTesting
     @Test
     public void evaluate_file_exists()
     {
-        Assert.assertTrue(Utils.file_exists("test.txt"));
-        Assert.assertFalse(Utils.file_exists("cthulhu.txt"));
+        Assert.assertTrue(Utils.file_exists("files/test.txt"));
+        Assert.assertFalse(Utils.file_exists("files/cthulhu.txt"));
     }
 
     @Test
     public void evaluate_write_to_file()
     {
         byte[] to_write = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+        String write_file = "files/util_testing_write.txt";
 
         try
         {
-            Utils.write_to_file(to_write, "util_testing_write.txt");
-            byte[] written = Utils.read_file("util_testing_write.txt")
-                    .getBytes();
+            Utils.write_to_file(to_write, write_file);
+            byte[] written = Utils.read_file(write_file).getBytes();
 
             Assert.assertArrayEquals(to_write, written);
 
-            Utils.delete_file("util_testing_write.txt");
+            Utils.delete_file(write_file);
         }
         catch (Exception e)
         {
@@ -154,7 +154,7 @@ public class UtilTesting
     @Test
     public void evaluate_delete_file()
     {
-        String del_file = "utils_testind_delete.txt";
+        String del_file = "files/utils_testind_delete.txt";
         byte[] del_byte = {0};
 
         try
@@ -180,7 +180,7 @@ public class UtilTesting
     public void evaluate_read_file()
     {
         String test_val = "This was a test!\n";
-        String read_val = Utils.read_file("test.txt");
+        String read_val = Utils.read_file("files/test.txt");
         Assert.assertEquals(test_val, read_val);
     }
 
