@@ -1,0 +1,10 @@
+[ver:1,total:480]
+partone/src/main/java/uk/co/m4numbers/csc8102/partone/MySafe.java:142,1480701600:142,m
+.gitignore:107,1480701600:107,r
+.git/info/exclude:58,1480701600:58,r
+partone/src/main/java/uk/co/m4numbers/csc8102/partone/EncryptionDecryption.java:48,1480701600:48,m
+partone/src/main/java/uk/co/m4numbers/csc8102/partone/Decryption.java:37,1480701600:37,d
+partone/src/main/java/uk/co/m4numbers/csc8102/partone/Encryption.java:37,1480701600:37,d
+parttwo/src/test/java/uk/co/m4numbers/csc8102/parttwo/tests/UtilTesting.java:26,1480701600:26,r
+parttwo/src/main/java/uk/co/m4numbers/csc8102/parttwo/HashCracker.java:21,1480701600:21,r
+parttwo/src/main/java/uk/co/m4numbers/csc8102/parttwo/PasswordDictionary.java:4,1480701600:4,r
