@@ -47,6 +47,9 @@ public class MySafe {
                 throw new Exception("File does not exist");
             }
 
+            //Create the class instance for the two operations it offers
+            EncryptionDecryption enc = new EncryptionDecryption();
+
             //If the user wants to encrypt something, they use -e [filename]
             if (argv[0].equals("-e"))
             {
@@ -57,7 +60,7 @@ public class MySafe {
                     throw new Exception("File already encrypted");
                 }
                 //Encrypt the file with a password
-                Encryption enc = new Encryption();
+
                 enc.encrypt(argv[1], Utils.get_user_password());
             }
 
@@ -71,8 +74,7 @@ public class MySafe {
                     throw new Exception("File not encrypted");
                 }
                 //Decrypt the file with a password
-                Decryption decr = new Decryption();
-                decr.decrypt(argv[1], Utils.get_user_password());
+                enc.decrypt(argv[1], Utils.get_user_password());
             }
 
             //Otherwise, if none of those were applicable... cry

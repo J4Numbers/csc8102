@@ -22,9 +22,10 @@ import javax.crypto.spec.SecretKeySpec;
 
 import java.io.*;
 import java.security.*;
+import java.util.Arrays;
 
 /**
- * Class Name - Encryption
+ * Class Name - EncryptionDecryption
  * Package - uk.co.m4numbers.csc8102.partone
  * Desc of Class - A class centred around the encryption of a file for the
  *  user. All the functions within this class allow for the fulfillment of
@@ -32,7 +33,8 @@ import java.security.*;
  * Author(s) - M. D. Ball
  * Last Mod: 29/11/2016
  */
-class Encryption {
+class EncryptionDecryption
+{
 
     /**
      * Encrypt a file with a given password, deleting the original file in
@@ -64,6 +66,52 @@ class Encryption {
                 filename + ".8102");
 
         //Now delete the original file
+        if (!Utils.delete_file(filename))
+        {
+            throw new IOException("File deletion failed");
+        }
+    }
+
+    /**
+     * When given a file that can be decrypted and a password, attempt to
+     * decrypt said file with said password
+     *
+     * @param filename Said file that we're going to try and decrypt
+     * @param password The password we're going to decrypt it with
+     * @throws Exception If something went wrong in lower methods
+     */
+    void decrypt(String filename, String password) throws Exception
+    {
+        //Read in and decode the data from the given file
+        byte[] encrypted_file = new sun.misc.BASE64Decoder().decodeBuffer(
+                Utils.read_file(filename));
+
+        //Split apart the encrypted file into its constituent parts
+        byte[] iv = Utils.split_byte_array(encrypted_file, 0, 16);
+        byte[] ciphertext = Utils.split_byte_array(encrypted_file, 16,
+                                                   encrypted_file.length - 20);
+        byte[] hmac = Utils.split_byte_array(encrypted_file,encrypted_file.length - 20,
+                                             encrypted_file.length);
+
+        //Derive the keys and generate a HMAC from what we have currently
+        DerivedKeys key_set = derive_keys(password.getBytes("utf-8"));
+        byte[] test_hmac = generate_hmac(iv, ciphertext, key_set.mac_code);
+
+        //If our generated HMAC doesn't match the one in the file... we have
+        // problems
+        if (!Arrays.equals(test_hmac, hmac))
+        {
+            throw new Exception("Wrong password or possibly corrupted file");
+        }
+
+        //Since we've reached this point, everything's valid, so let's
+        // regenerate the plaintext from the ciphertext
+        byte[] plaintext = regenerate_plaintext(iv, key_set.aes_key, ciphertext);
+
+        //And write the decrypted output to the original filename
+        Utils.write_to_file(plaintext, filename.substring(0, filename.length() - 5));
+
+        //Finally, delete the old encrypted file and finish up
         if (!Utils.delete_file(filename))
         {
             throw new IOException("File deletion failed");
@@ -147,6 +195,27 @@ class Encryption {
         aes_cipher.init(Cipher.ENCRYPT_MODE, aes_key, new IvParameterSpec(iv));
 
         return aes_cipher.doFinal(plaintext);
+    }
+
+    /**
+     * Regenerate the plaintext now that we have all the data that was used
+     * to generate it in the first place. Basically just use the decrypt mode
+     * of the AES/CBC block cipher and we're golden.
+     *
+     * @param iv 16-byte random data
+     * @param key 16-byte AES key
+     * @param ciphertext plaintext bytes to encrypt
+     * @return The plaintext that this ciphertext once was
+     */
+    private byte[] regenerate_plaintext(byte[] iv, byte[] key, byte[] ciphertext)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException
+    {
+        SecretKey aes_key = new SecretKeySpec(key, "AES");
+        Cipher aes_cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        aes_cipher.init(Cipher.DECRYPT_MODE, aes_key, new IvParameterSpec(iv));
+
+        return aes_cipher.doFinal(ciphertext);
     }
 
 }
