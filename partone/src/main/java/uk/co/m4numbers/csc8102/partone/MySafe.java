@@ -23,7 +23,8 @@ package uk.co.m4numbers.csc8102.partone;
  * Author(s) - M. D. Ball
  * Last Mod: 29/11/2016
  */
-public class MySafe {
+public class MySafe
+{
 
     /**
      * It's a main method... what more do you really need to know?
@@ -33,9 +34,11 @@ public class MySafe {
     public static void main(String[] argv)
     {
 
-        try {
+        try
+        {
             //If exactly 2 arguments were not provided, throw out some help text
-            if (argv.length != 2) {
+            if (argv.length != 2)
+            {
                 System.out.println("Incorrect usage of the program...");
                 throw new Exception("Incorrect args found");
             }

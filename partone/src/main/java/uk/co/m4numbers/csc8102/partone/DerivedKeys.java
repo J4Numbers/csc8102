@@ -20,11 +20,12 @@ package uk.co.m4numbers.csc8102.partone;
  * Class Name - DerivedKeys
  * Package - uk.co.m4numbers.csc8102.partone
  * Desc of Class - A collection class which holds the two bits of information
- *  we use for encryption and message signing
+ * we use for encryption and message signing
  * Author(s) - M. D. Ball
  * Last Mod - 29/11/2016
  */
-class DerivedKeys {
+class DerivedKeys
+{
 
     final byte[] aes_key;
     final byte[] mac_code;
@@ -33,7 +34,7 @@ class DerivedKeys {
      * Constant initiator which just plugs the inputs into the final variables
      * within the class
      *
-     * @param aes_key The AES-128 key we use for encryption and decryption
+     * @param aes_key  The AES-128 key we use for encryption and decryption
      * @param mac_code The HMAC secret which we use for... well... the HMAC
      */
     DerivedKeys(byte[] aes_key, byte[] mac_code)
