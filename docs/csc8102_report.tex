@@ -482,19 +482,18 @@ end which ensures integrity of the data and allows us to confirm that the
 password used was the correct one.
 
 The program simply defines an encrypted file as any file that ends with the
-\texttt{.8102} extention. A file which does not end with that extension is
+\texttt{.8102} extension A file which does not end with that extension is
 assumed to not be encrypted at all. In order to build this program, the user
 needs to run the two maven commands: \texttt{mvn clean install} and
 \texttt{mvn jar:jar} to create the resultant \texttt{.jar} file inside the
-\texttt{target/} folder. From there, the user can use the following commands
-to encrypt and decrypt a file respectively: \texttt{java -jar [jarfile] -e
-[filename]} and \texttt{java -jar [jarfile] -d [filename].8102}.
+\texttt{target/} folder. From there, the user can use commands to encrypt and
+decrypt those files.
 
 A better explanation of the commands and their use can be found in the
 \texttt{README.md} file packaged with the code. If the file you are trying to
 encrypt or decrypt does not exist, then the program will complain and exit
 once it detects that. The same happens if the program detects that you
-are trying to encrypt a file with the \texttt{.8102} extention, or if you are
+are trying to encrypt a file with the \texttt{.8102} extension, or if you are
 trying to decrypt a file without it. Once the input file has been encrypted or
 decrypted, it will be deleted and a new file with the appropriate file
 extension will be written to.
@@ -505,8 +504,9 @@ due to the problems that it can cause later down the line.
 
 \subsection{Implementation}
 
-Let us say that we wish to encrypt the file below that contains some
-confidential data using this program.
+Let us say that we wish to encrypt the file within Figure
+\ref{fig:secretinformation} that contains some confidential data using this
+program.
 
 \begin{figure}[h!]
 	\centering
@@ -514,6 +514,100 @@ confidential data using this program.
 	\caption{A dangerous secret}
 	\label{fig:secretinformation}
 \end{figure}
+
+We would use the \texttt{-e [filename]} flag to encrypt this file and be
+presented with the screen in Figure \ref{fig:secretpassword}, asking us to
+enter a password for the file.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.9\linewidth]{images/secret_password}
+	\caption{The password for a dangerous secret}
+	\label{fig:secretpassword}
+\end{figure}
+
+Once the password has been entered, the program goes ahead and encrypts the
+file by first hashing the given password with SHA-256 and splitting it into two
+16-byte halves. It designates the first half as the AES-128 key we are going to
+use later and the second half as a MAC code we use as input for the HMAC
+function later on.
+
+To encrypt the plaintext, we first securely generate 16 bytes to act as an
+initial vector (IV) for our CBC engine. Then we give the IV, the AES-128 key
+generated in the last part, and the plaintext to the encryption libraries with
+instructions to encrypt using AES with CBC and using the PKCS5 padding scheme.
+This generates the ciphertext equivalent of the plaintext that can be decrypted
+when provided along with the IV and password used to create it.
+
+In order to provide integrity to the data (and to provide a way to validate
+that the user provided the correct password during decryption), we then combine
+the IV and the ciphertext, then hash them down to a 20-byte signature using a
+secure HMAC function with SHA1 (Even though SHA1 has been proven insecure
+\cite{Wang2005}), using the MAC code generated above as an input. By doing this,
+we ensure that if the user enters a different password, then the MAC code
+generated from that password will result in a different signature for the file.
+
+At this point, we concatenate the IV, the ciphertext, and the signature into a
+new \texttt{.8102} file that we replace the original file with. The new file is
+encoded with Base64 and looks like the file in Figure
+\ref{fig:secretencryption}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.9\linewidth]{images/secret_encryption}
+	\caption{The encryption of a dangerous secret}
+	\label{fig:secretencryption}
+\end{figure}
+
+Decryption of the file is done with the \texttt{-d [filename].8102} flag which
+then present the screen in Figure \ref{fig:secretdecryption}, asking for the
+password again.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.9\linewidth]{images/secret_decryption}
+	\caption{The decryption of a dangerous secret}
+	\label{fig:secretdecryption}
+\end{figure}
+
+At which point, the program reads in that file and splits apart the input into
+the first 16 bytes which are the IV, the 20 bytes at the end which are the
+signature for the file, and the rest in the middle which is the ciphertext.
+Since we have everything that was initially used to create the signature during
+the encryption stage, we now create our own version of the signature with the
+MAC code from the password hash, the IV, and the ciphertext and compare it with
+the signature attached to the file.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{images/secret_decryption}
+	\caption{A failure at decrypting our dangerous secret}
+	\label{fig:secretfailure}
+\end{figure}
+
+
+If the hash that was created from the password and the contents of the file
+does not match the one attached to the file then we stop right there and report
+back to the user that the password was either incorrect or the file integrity
+has been broken (see Figure \ref{fig:secretfailure}). If the signatures matched,
+we decrypt the ciphertext and write the plaintext to the original file,
+deleting the encrypted file afterwards.
+
+However, this is not really a very secure solution to any problem. While this
+program does provide confidentiality to the data in that file at that point in
+time, there is nothing stopping a malicious user from deleting that file
+completely, at which point we will lose all records of who Daredevil is.
+Additional controls could be put in place to protect the integrity of the
+files, but there is not really much that could be done if an attacker has
+physical access to the machine.
+
+Another potential weakness of this program is that, if an attacker does get
+access to this machine, then they are also able to also encrypt other files
+with their own passwords that the user does not know and engineer a denial of
+service attack against the user, denying them from accessing their files. Part
+of the reason for this could be that there are no privileges required for this
+program - it can be run by anyone on the machine to encrypt the files they have
+access to.
 
 
 \section{Hash Cracking}\label{sec:hashcracking}
@@ -634,6 +728,7 @@ Subsection text here.
 % The IEEEtran BibTeX style support page is at:
 % http://www.michaelshell.org/tex/ieeetran/bibtex/
 \bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,references}
 % argument is your BibTeX string definitions and bibliography database(s)
 %\bibliography{IEEEabrv,../bib/paper}
 %
