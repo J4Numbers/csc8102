@@ -57,7 +57,7 @@ public class MySafe
             if (argv[0].equals("-e"))
             {
                 //If that file has the encoding line ending... cry
-                if (argv[1].endsWith(".8102"))
+                if (argv[1].endsWith(".aes"))
                 {
                     System.out.println("File already encrypted...");
                     throw new Exception("File already encrypted");
@@ -71,7 +71,7 @@ public class MySafe
             else if (argv[0].equals("-d"))
             {
                 //If that file doesn't end in our encoding line ending... cry
-                if (!argv[1].endsWith(".8102"))
+                if (!argv[1].endsWith(".aes"))
                 {
                     System.out.println("File is not encrypted...");
                     throw new Exception("File not encrypted");

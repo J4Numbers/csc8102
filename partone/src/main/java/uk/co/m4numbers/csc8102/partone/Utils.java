@@ -1,7 +1,7 @@
 package uk.co.m4numbers.csc8102.partone;
 
 /*
- * Copyright 2016 M. D. Ball (m.d.ball2@ncl.ac.uk)
+ * Copyright 2016 M. D. Ball (m4numbers@gmail.com)
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -218,10 +218,10 @@ public class Utils
     {
         System.out.println("MySafe can be used in one of two ways:");
         System.out.println("\t-e [filename]");
-        System.out.println("\t\tEncrypt [filename] into [filename].8102");
+        System.out.println("\t\tEncrypt [filename] into [filename].aes");
         System.out.println("");
         System.out.println("\t-d [filename].8102");
-        System.out.println("\t\tDecrypt [filename].8102 into [filename]");
+        System.out.println("\t\tDecrypt [filename].aes into [filename]");
     }
 
 }
