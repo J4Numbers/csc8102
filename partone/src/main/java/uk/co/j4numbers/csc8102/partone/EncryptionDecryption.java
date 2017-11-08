@@ -184,6 +184,8 @@ public class EncryptionDecryption
         byte[] plaintext = regenerate_plaintext(
                 iv, aes_key, ciphertext);
 
+        plaintext = Utils.remove_superfluous_characters(plaintext);
+
         //And write the decrypted output to the original filename
         Utils.write_to_file(
                 plaintext, filename.substring(0, filename.length() - 4));
