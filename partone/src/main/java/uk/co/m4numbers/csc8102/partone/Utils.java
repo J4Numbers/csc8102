@@ -106,6 +106,10 @@ public class Utils
         return result;
     }
 
+    public static byte[] remove_superfluous_characters(byte[] plaintext) {
+        return new String(plaintext).replace("Â", "").getBytes();
+    }
+
     /**
      * Ask the user to enter a password and return whatever input we get to
      * whoever asked for it
